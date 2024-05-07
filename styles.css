@@ -47,6 +47,11 @@ body, html {
     margin-bottom: 20px;
 }
 
+.video-container {
+    width: 100%; /* Ensures the video container matches the filter menu width */
+    margin-top: 20px; /* Optional: Adds some space between the filter div and the video */
+}
+
 .results-container {
     flex-grow: 1;
     overflow: hidden;
