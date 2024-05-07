@@ -19,24 +19,24 @@ body, html {
 
 .main-container {
     display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    min-height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
+    flex-direction: row; /* Ensure the sidebar and content area are side-by-side */
+    width: 100%; /* Full width to use all available space */
+    min-height: 100vh; /* Optional: full height of the viewport */
+    padding: 20px; /* Optional: spacing around the content */
+    box-sizing: border-box; /* Includes padding in width calculation */
 }
 
 .sidebar {
-    width: 20%; 
-    margin-right: 20px;
+    width: 50%; /* Adjust based on preference */
+    padding: 20px;
+    height: 100vh;
     position: sticky;
     top: 10px;
 }
 
 .content-area {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
+    flex-grow: 1; /* Takes up remaining space */
+    padding: 20px;
 }
 
 
@@ -50,6 +50,7 @@ body, html {
 .results-container {
     flex-grow: 1;
     overflow: hidden;
+    margin-right: auto;
 }
 
 
@@ -57,6 +58,8 @@ form {
     background-color: #EEEEEE;
     padding: 50px;
     border-radius: 10px;
+    width: 80%;
+    margin-right: auto;
 }
 
 .form-step {
@@ -142,16 +145,17 @@ button:hover, input[type="submit"]:hover {
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    border: 1px solid #ddd;
+    border: 1px solid #c3f1ff;
     padding: 15px;
     background-color: #EEEEEE;
     border-radius: 10px;
+    margin-right: auto;
     margin-top: 2rem;
     margin-bottom: 15px;
-    width: 97%;
-    -webkit-box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
--moz-box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
-box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
+    width: 87%;
+    -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
+-moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
+box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .plan-name {
@@ -199,7 +203,7 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
     width: 100%;
     text-decoration: underline dashed 1px #168aad67;
     text-underline-offset: 5px;
-    font-weight: 400;
+    font-weight: 600;
     color: rgb(56, 56, 56);
 }
 
@@ -282,6 +286,7 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
   margin-top: 2rem;
   text-decoration: underline dashed 1px #168aad49;
   text-underline-offset: 5px;
+  margin-left: 1.5rem;
 }
 
 .fa-solid-fa-heart-pulse {
@@ -313,52 +318,83 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 
 
 
-/* Mobile styles */
 @media (max-width: 1200px) {
-  .main-container, .sidebar, .content-area {
-      flex-direction: column;
-      width: 100%;
-      padding: 10px;  
-      box-sizing: border-box; 
+    .main-container, .sidebar, .content-area {
+        flex-direction: column;
+        width: 100%;
+        padding: 10px;
+        box-sizing: border-box; 
+    }
+  
+    .sidebar {
+        margin-right: 0; /* Remove margin between sidebar and content-area */
+        position: static;
+        display: none; /* Hide sidebar if not needed on mobile */
+    }
+  
+    .filters {
+        display: none; /* Hide filters on mobile */
+    }
+  
+    .plan {
+        flex-direction: column; 
+        width: 100%; /* Ensure plans take full width */
+        margin-top: 2rem;
+        box-sizing: border-box; /* Include padding and border in width */
+    }
+  
+    .plan-header-container, .plan-details-container {
+        width: 100%; /* Full width on mobile */
+    }
+  
+    .zero-premium {
+      margin-top: 10px;
+    }
+  
+    .plan-deductible {
+      margin-left: auto;
+    }
+  
+    .plan-detail {
+      margin-bottom: 10px;
+    }
+  
+    .plan-details-container {
+      border-left: none;
+    }
+  
+    .details-button {
+      margin-right: 1rem;
+    }
+  
+    #insurance-form, #insurance-form * {
+        box-sizing: border-box; /* Apply box-sizing to all child elements */
+    }
+    
+    #insurance-form {
+        width: 100%; /* Ensure the form takes the full width */
+        margin: 0 auto; /* Center the form horizontally */
+        padding: 10px; /* Add padding to match the styling of the plans area */
+    }
+    
+    .form-step {
+        width: 100%; /* Ensure each form step takes full width */
+        margin-top: 1rem; /* Space out form steps */
+        text-align: center;
+        font-size: 18px; /* Adjust font size for better readability on mobile */
+    }
+    
+    input[type="text"], input[type="number"], select, button {
+        width: 100%; /* Ensure inputs and buttons take full width */
+        padding: 8px 10px; /* Uniform padding for inputs */
+        margin: 5px 0; /* Add slight margin around inputs for spacing */
+        height: 4rem;
+    }
+    
+    .btndiv {
+        text-align: center; /* Center buttons within the form */
+    }
+
+    
+
   }
-
-  .sidebar {
-      margin-right: 0; /* Remove margin between sidebar and content-area */
-      position: static;
-  }
-
-  .filters {
-      display: none; /* Hide filters on mobile */
-  }
-
-  .plan {
-      flex-direction: column; 
-      width: 100%; 
-      margin-top: 2rem;
-      box-sizing: border-box; /* Include padding and border in width */
-  }
-
-  .plan-header-container, .plan-details-container {
-      width: 100%; /* Full width on mobile */
-  }
-
-  .zero-premium {
-    margin-top: 10px;
-}
-
-.plan-deductible {
-  margin-left: auto;
-}
-
-.plan-detail {
-  margin-bottom: 10px;
-}
-
-.plan-details-container {
-  border-left: none;
-}
-
-.details-button {
-  margin-right: 1rem;
-
-}
