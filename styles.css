@@ -27,7 +27,7 @@ body, html {
 }
 
 .sidebar {
-    width: 50%; /* Adjust based on preference */
+    width: 40%; /* Adjust based on preference */
     padding: 20px;
     height: 100vh;
     position: sticky;
@@ -80,6 +80,10 @@ form {
 .form-step.active-step {
   display: block;
   opacity: 1;
+}
+
+#sort {
+    height: auto;
 }
 
 input[type="text"], input[type="number"], select, button {
