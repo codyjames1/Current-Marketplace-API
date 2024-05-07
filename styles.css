@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-/* Base layout styles */
+
 body, html {
     margin: 0;
     padding: 0;
@@ -10,13 +10,13 @@ body, html {
     background-color: rgb(255, 255, 255);
 }
 
-/* Headings */
+
 .right-plan {
     font-size: 50px;
     
 }
 
-/* Layout containers */
+
 .main-container {
     display: flex;
     flex-direction: row;
@@ -27,7 +27,7 @@ body, html {
 }
 
 .sidebar {
-    width: 20%; /* Relative width for responsive design */
+    width: 20%; 
     margin-right: 20px;
     position: sticky;
     top: 10px;
@@ -39,7 +39,7 @@ body, html {
     flex-direction: column;
 }
 
-/* Filter and result containers */
+
 .filters {
     background-color: #f8f8f8;
     padding: 15px;
@@ -52,7 +52,7 @@ body, html {
     overflow: hidden;
 }
 
-/* Form styling */
+
 form {
     background-color: #EEEEEE;
     padding: 50px;
@@ -60,9 +60,9 @@ form {
 }
 
 .form-step {
-  display: none; /* Start with all steps hidden */
+  display: none; 
   opacity: 0;
-  transition: opacity 0.8s ease-in-out; /* Smooth transition for the opacity */
+  transition: opacity 0.8s ease-in-out; 
 }
 
 .active-step {
@@ -114,10 +114,10 @@ input:focus,
 select:focus,
 textarea:focus,
 button:focus {
-    outline: none; /* Removes the outline */
+    outline: none; 
 }
 
-/* Button styles */
+
 button, input[type="submit"] {
     background: #1e6091;
     color: white;
@@ -136,7 +136,7 @@ button:hover, input[type="submit"]:hover {
     background: #168aad;
 }
 
-/* Plan container styling */
+
 .plan {
     display: flex;
     flex-direction: row;
@@ -164,10 +164,10 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 
 .plan-header-container {
     display: flex;
-    flex-direction: column; /* Ensure this container uses flexbox to align children inline */
-    align-items: left; /* Align items vertically at the center */
-    justify-content: flex-start; /* Start aligning items from the beginning */
-    width: 100%; /* Take full width to ensure proper alignment */
+    flex-direction: column; 
+    align-items: left; 
+    justify-content: flex-start; 
+    width: 100%; 
     margin-bottom: 1rem;
     display: none;
     
@@ -186,16 +186,16 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 }
 
 .plan-logo {
-    width: auto; /* Adjust width to be auto to maintain aspect ratio */
-    max-width: 200px; /* Maximum width for logo to ensure it doesn't become too large */
-    height: auto; /* Maintain aspect ratio of the logo */
-    margin-right: 10px; /* Right margin to create space between logo and plan name */
+    width: auto; 
+    max-width: 200px; 
+    height: auto; 
+    margin-right: 10px; 
 }
 
 .plan-detail {
-    font-size: 16px; /* Adjusted for better readability */
-    padding: 5px; /* Vertical padding for separation */
-    display: block; /* Ensures details are displayed as block for full width usage */
+    font-size: 16px;
+    padding: 5px; 
+    display: block; 
     width: 100%;
     text-decoration: underline dashed 1px #168aad67;
     text-underline-offset: 5px;
@@ -210,19 +210,19 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 
 
 .enroll-button, .details-button {
-    background-color: #1e6091; /* Light green background */
-    color: white; /* Black text color */
-    text-align: center; /* Center the text */
-    font-size: 15px; /* 15px font size */
-    border-radius: 10px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
-    display: flex; /* Use flexbox for centering text vertically and horizontally */
-    align-items: center; /* Center alignment of the text vertically */
-    justify-content: center; /* Center alignment of the text horizontally */
-    text-decoration: none; /* No underline for the link */
-    border: none; /* No border */
-    width: 100%; /* Full width within the container */
-    box-sizing: border-box; /* Border box for padding and border calculations */;
+    background-color: #1e6091; 
+    color: white; 
+    text-align: center; 
+    font-size: 15px; 
+    border-radius: 10px; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-decoration: none; 
+    border: none; 
+    width: 100%; 
+    box-sizing: border-box; 
 }
 
 .enroll-button:focus {
@@ -231,8 +231,8 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 
 .details-button {
   background-color: transparent;
-    display: inline-flex; /* Inline flex to align with buttons */
-    margin: 0; /* No margin */
+    display: inline-flex; 
+    margin: 0; 
     padding: .5rem;
     height: 2.5rem;
     color: #168aad;
@@ -243,19 +243,19 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
   outline:none;
 }
 
-/* Ensure that the buttons are evenly spaced if they are side by side */
+
 .enroll-container {
     display: flex;
     justify-content: space-between;
-    gap: 1rem; /* Space between the buttons */
+    gap: 1rem; 
     margin-top: 1rem;
 }
 
 .zero-premium {
-  background-color: #3D91FF; /* Green background for visibility */
+  background-color: #3D91FF; 
     color: white;
     padding: 7.5px;
-    border-radius: 10px 0 0 5px; /* Rounded bottom-left corner */
+    border-radius: 10px 0 0 5px; 
     font-size: 1.5em;
     max-width: 98%;
     margin-bottom: 1rem;
@@ -264,10 +264,10 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
 }
 
 .most-affordable {
-  background-color: #dace29; /* Green background for visibility */
+  background-color: #dace29; 
     color: white;
     padding: 7.5px;
-    border-radius: 10px 0 0 5px; /* Rounded bottom-left corner */
+    border-radius: 10px 0 0 5px; 
     font-size: 1.5em;
     max-width: 100%;
     margin-bottom: 1rem;
@@ -318,8 +318,8 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
   .main-container, .sidebar, .content-area {
       flex-direction: column;
       width: 100%;
-      padding: 10px;  /* Ensure padding is consistent for all main containers */
-      box-sizing: border-box; /* Include padding in width calculation */
+      padding: 10px;  
+      box-sizing: border-box; 
   }
 
   .sidebar {
@@ -332,8 +332,8 @@ box-shadow: 0px 0px 15px 0px rgba(179,179,179,1);
   }
 
   .plan {
-      flex-direction: column; /* Stack elements vertically */
-      width: 100%; /* Adjust width to account for padding */
+      flex-direction: column; 
+      width: 100%; 
       margin-top: 2rem;
       box-sizing: border-box; /* Include padding and border in width */
   }
