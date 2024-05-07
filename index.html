@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Search Health Insurance Plans</title>
+</head>
+
+<body>
+  <div class="main-container">
+      <div class="sidebar">
+        <div class="filters">
+          <h3>Filter Plans</h3>
+          <div>
+              <label for="issuer">Plan Issuer:</label>
+              <div class="issuer-checkboxes" id="issuer-checkboxes">
+                <!-- Checkboxes will be populated dynamically -->
+            </div>
+          </div>
+          <div>
+              <label for="planType">Plan Type:</label>
+              <select id="planType">
+                  <option value="">Select Type</option>
+                  <option value="HMO">HMO</option>
+                  <option value="PPO">PPO</option>
+                  <option value="EPO">EPO</option>
+              </select>
+          </div>
+          <div>
+              <label for="sort">Sort By:</label>
+              <select id="sort">
+                  <option value="premiumLowHigh">Premium: Low to High</option>
+                  <option value="premiumHighLow">Premium: High to Low</option>
+              </select>
+          </div>
+          <button class="apply-filters-button" id="apply-filters-button" onclick="applyFilters()">Apply Filters</button>
+      </div>
+      </div>
+  
+      <div class="content-area">
+        <form id="insurance-form">
+          <h2 class="right-plan">Let's find the right plan<br><span style="background-color:#d9ed92; padding:5px; border-radius:30px;">for you.</span></h2>
+          
+          <!-- Step 1: Address -->
+          <div id="step1" class="form-step active-step">
+            <p class="tip">Start by entering your address so we can search plans in your area.<br><br>We'll fill in the state for you!</p>
+            <label for="zipcode">ZIP Code:</label>
+            <input type="text" id="zipcode" name="zipcode" maxlength="5" minlength="5" pattern="\d{5}" placeholder="Enter ZIP Code" required oninput="autoValidateZipCode(this.value)">
+            <label for="state">State:</label>
+              <input type="text" id="state" name="state" required readonly>
+              <input type="hidden" id="countyfips" name="countyfips">
+              <div class="btndiv">
+              <button class="next" type="button" id="next-button" onclick="nextStep(1, 2);">Next</button>
+              </div>
+          </div>
+
+          <div id="step2" style="display:none;" class="form-step">
+            <p class="tip">Next, we will use your annual income to determine how much of a tax credit you will receive. </p>
+          <input type="number" id="income" name="income" inputmode="numeric" placeholder="Enter Annual Income" required>
+          <div class="btndiv">
+          <button class="back" type="button" onclick="nextStep(2, 1)">Back</button>
+      <button class="next" type="button" onclick="nextStep(2, 3)">Next</button>
+      </div>
+        </div>
+        
+        <div id="step3" style="display:none;" class="form-step">
+          <p class="tip">Your age and gender help to determine your rates.  </p>
+          <input type="number" id="age" name="age" inputmode="numeric" placeholder="Age" required>
+          <select id="gender" name="gender" placeholder="Gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+          <div class="btndiv">
+          <button class="back" type="button" onclick="nextStep(3, 2)">Back</button>
+      <button class="next" type="button" onclick="nextStep(3, 4)">Next</button>
+    </div>
+        </div>
+        
+        <div id="step4" style="display:none;">
+          <label for="year">Plan Year:</label>
+          <select id="year" name="year" required>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+          </select>
+          <div class="btndiv">
+          <button class="back" type="button" onclick="nextStep(4, 3)">Back</button>
+          <button type="submit">Submit</button>
+          </div>
+      </div>
+
+          <div id="validation-message"></div>
+      </form>
+          
+          
+          <div id="results">
+              <!-- Results will be displayed here -->
+          </div>
+      </div>
+  </div>
+
+<script>
+
+
+  // Function to get copay information
+  function getCopay(benefits, benefitType) {
+    const benefit = benefits.find((b) => b.type === benefitType);
+    if (benefit && benefit.cost_sharings.length > 0) {
+      const copay = benefit.cost_sharings.find((cs) => cs.network_tier === "In-Network");
+      return copay ? `$${copay.copay_amount}` : "N/A";
+    }
+    return "N/A";
+  }
+
+  function displayPlans(data) {
+    const resultsDiv = document.getElementById("results");
+    resultsDiv.innerHTML = ""; // Clear previous results
+
+    // Logos for conditional display when plans are populated
+    const logos = {
+      "UnitedHealthcare": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/United-Healthcare-Logo-1.png",
+      "Aetna": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-53.png",
+      "Blue": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-51.png",
+      "AmeriHealth": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-54.png",
+      "Oscar": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-52.png",
+      "CareSource": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-50.png",
+      "Ambetter from Sunshine Health": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-55.png"
+    };
+
+    if (data.plans && data.plans.length > 0) {
+      data.plans.forEach((plan) => {
+        const planDiv = document.createElement("div");
+        planDiv.className = "plan";
+        const header = document.createElement("div");
+        header.className = "plan-header";
+
+        // Display appropriate logo based on the issuer's name
+        Object.keys(logos).forEach(key => {
+          if (plan.issuer.name.includes(key)) {
+            const img = document.createElement("img");
+            img.src = logos[key];
+            img.alt = key + " Logo";
+            img.className = "plan-logo";
+            header.appendChild(img);
+          }
+        });
+
+        const planName = document.createElement("span");
+        planName.textContent = plan.name;
+        planName.className = "plan-name"
+        header.appendChild(planName);
+
+
+        planDiv.appendChild(header);
+        appendPlanDetails(plan, planDiv);
+        resultsDiv.appendChild(planDiv);
+      });
+    } else {
+      const noPlans = document.createElement("div");
+      noPlans.className = "plan-detail";
+      noPlans.innerText = "No plans found.";
+      resultsDiv.appendChild(noPlans);
+    }
+  }
+
+  //income formating for dollar amount
+  function formatIncome() {
+    const input = document.getElementById('income');
+    const value = input.value.replace(/[^\d.-]/g, ''); // Remove non-numeric chars except . and -
+    const formattedValue = parseFloat(value).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+
+    // Update the input field with formatted value only if it's a valid number
+    if (!isNaN(parseFloat(value)) && value !== '') {
+        input.value = formattedValue;
+    } else {
+        input.value = '';
+    }
+}
+
+  // Helper function to append plan details with structured layout
+function appendPlanDetails(plan, planDiv) {
+    // Access the existing header that contains the logo and plan name
+    const header = planDiv.querySelector('.plan-header');
+
+     // Fetching and displaying the rating
+     const ratingInfo = plan.quality_rating;
+    const ratingDiv = document.createElement("div");
+    ratingDiv.className = "plan-rating";
+    ratingDiv.style.color = "#ffc300";
+    ratingDiv.style.marginTop = "5px";
+    
+    if (ratingInfo.available && ratingInfo.global_rating) {
+        for (let i = 0; i < 5; i++) {
+            const star = document.createElement("i");
+            star.className = i < ratingInfo.global_rating ? "fas fa-star" : "far fa-star";
+            ratingDiv.appendChild(star);
+        }
+    } else {
+        ratingDiv.textContent = "Not Rated";
+    }
+    
+    // Placing the rating above the deductible
+    header.appendChild(ratingDiv);
+
+    // Get the in-network deductible
+    const deductibleInfo = plan.deductibles.find(d => d.network_tier === "In-Network");
+    const deductibleAmount = deductibleInfo ? `$${deductibleInfo.amount} Deductible` : "No Deductible Info";
+
+    // Create a deductible display if applicable
+    const deductibleDiv = document.createElement("div");
+    deductibleDiv.className = "plan-deductible";
+
+    // Create the icon element
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-heart-pulse";
+    icon.style.marginRight = "5px";
+    icon.style.color = "#3D91FF";  // Adding some space between the icon and the text
+
+    // Append the icon and text to the deductibleDiv
+    deductibleDiv.appendChild(icon);
+    deductibleDiv.append(deductibleAmount); // Append text next to the icon
+    header.appendChild(deductibleDiv);  // Append it to the plan-header
+
+    const detailsContainer = document.createElement("div");
+    detailsContainer.className = "plan-details-container";
+    planDiv.appendChild(detailsContainer);
+
+    // Insert $0 Premium label first if applicable
+    if (plan.premium_w_credit === 0) {
+        const zeroPremiumDetail = document.createElement("div");
+        zeroPremiumDetail.className = "plan-detail zero-premium";
+        zeroPremiumDetail.innerHTML = "<span>$0 Premium</span>";
+        detailsContainer.appendChild(zeroPremiumDetail);
+    }
+
+    const details = [
+        { label: 'Premium Before Tax Credit:', value: `$${plan.premium}` },
+        { label: 'Premium with Credit:', value: `$${plan.premium_w_credit}` },
+        { label: 'Type:', value: plan.type },
+        { label: 'Specialist Copay:', value: getCopay(plan.benefits, "SPECIALIST_VISIT") },
+        { label: 'Primary Care Copay:', value: getCopay(plan.benefits, "PRIMARY_CARE_VISIT_TO_TREAT_AN_INJURY_OR_ILLNESS") }
+    ];
+
+    details.forEach(detail => {
+        const detailDiv = document.createElement("div");
+        detailDiv.className = "plan-detail";
+        detailDiv.innerHTML = `<span>${detail.label}</span> ${detail.value}`;
+        detailsContainer.appendChild(detailDiv);
+    });
+
+    // Add buttons for enrolling or more details
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "enroll-container";
+    const enrollButton = document.createElement("button");
+    enrollButton.innerText = "Enroll";
+    enrollButton.className = "enroll-button";
+    buttonContainer.appendChild(enrollButton);
+    const detailsButton = document.createElement("a");
+    detailsButton.innerText = "Plan Details";
+    detailsButton.className = "details-button";
+    detailsButton.href = plan.benefits_url;
+    detailsButton.target = "_blank";
+    buttonContainer.appendChild(detailsButton);
+    detailsContainer.appendChild(buttonContainer);
+}
+
+
+//multistep form logic
+
+document.addEventListener('DOMContentLoaded', function() {
+    var initialStep = document.getElementById("step1");
+    if (initialStep) {
+        initialStep.style.display = "block";
+        setTimeout(() => initialStep.classList.add("active-step"), 15); // Short delay before adding active class
+    }
+});
+
+function nextStep(current, next) {
+    var currentStep = document.getElementById("step" + current);
+    var nextStep = document.getElementById("step" + next);
+
+    // Only validate when moving forward; current must be less than next
+    if (current < next && !validateCurrentStepInputs(currentStep)) {
+        return; // Stop the transition if validation fails
+    }
+
+    if (currentStep && nextStep) {
+        currentStep.classList.remove("active-step");
+        setTimeout(() => {
+            currentStep.style.display = "none";
+            nextStep.style.display = "block";
+            setTimeout(() => nextStep.classList.add("active-step"), 10); // Allow display to be set before adding opacity
+        }, 500); // Match this delay with the CSS transition time
+    } else {
+        console.error("Step " + next + " does not exist.");
+    }
+}
+
+// Function to validate inputs of the current step
+function validateCurrentStepInputs(stepElement) {
+    var inputs = stepElement.querySelectorAll("input[required], select[required]");
+    for (var i = 0; i < inputs.length; i++) {
+        if (!inputs[i].checkValidity()) {
+            inputs[i].reportValidity(); // Show validation message
+            return false;
+        }
+    }
+    return true; // All inputs are valid
+}
+
+//runs validateZipCode on keyup for 5th numeric value entered
+
+function autoValidateZipCode(value) {
+    if (value.length === 5) {
+        validateZipCode();
+    }
+}
+
+//start zipcode validation to retrieve county fips and state in hidden fields
+
+function validateZipCode() {
+    const zipcode = document.getElementById("zipcode").value;
+    const messageDiv = document.getElementById('validation-message');
+    messageDiv.textContent = ''; // Clear previous messages
+
+    if (!zipcode) {
+        messageDiv.textContent = "Please enter a valid ZIP code.";
+        messageDiv.style.color = 'red';
+        return;
+    }
+
+    const apiUrl = `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=d687412e7b53146b2631dc01974ad0a4`;
+
+    fetch(apiUrl)
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        if (data.counties && data.counties.length > 0) {
+            const county = data.counties[0];
+            document.getElementById("countyfips").value = county.fips; // Store FIPS in hidden input
+            document.getElementById("state").value = county.state.toUpperCase(); // Store state in uppercase
+
+            checkStateMarketplace(county.state.toUpperCase());
+        } else {
+            messageDiv.textContent = "No county data found for this ZIP code.";
+            messageDiv.style.color = 'red';
+        }
+    })
+    .catch(error => {
+        console.error("Failed to fetch County FIPS:", error);
+        messageDiv.textContent = "Error validating ZIP code. Please check your connection and try again.";
+        messageDiv.style.color = 'red';
+    });
+}
+
+//start check to see if state is a valid marketplace state
+
+function checkStateMarketplace(state) {
+    const marketplaceStates = ['CA', 'CO', 'CT', 'DC', 'ID', 'KY', 'ME', 'MD', 'MA', 'MN', 'NV', 'NJ', 'NM', 'NY', 'PA', 'RI', 'VT', 'VA', 'WA'];
+    const messageDiv = document.getElementById('validation-message');
+
+    if (marketplaceStates.includes(state)) {
+        messageDiv.textContent = "Sorry, your state does not participate in the federal marketplace. Please visit your state's website for assistance.";
+        messageDiv.style.color = 'red';
+        document.getElementById('next-button').disabled = true; // Prevents proceeding to the next step
+    } else {
+        messageDiv.textContent = ''; // Clears any previous message
+        document.getElementById('next-button').disabled = false; // Enables the button if the state is not in the list
+    }
+}
+ 
+
+  
+let globalPlanData = [];  // This will store all the plans globally
+
+
+  document.getElementById("insurance-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const countyFips = document.getElementById("countyfips").value;
+    const planYear = parseInt(document.getElementById("year").value);
+
+    if (!countyFips || isNaN(planYear)) {
+      document.getElementById("validation-message").innerText = "Please validate the address and enter a valid plan year.";
+      return;
+    }
+
+    const data = {
+      household: {
+        income: parseInt(document.getElementById("income").value),
+        people: [
+          {
+            age: parseInt(document.getElementById("age").value),
+            aptc_eligible: true,
+            gender: document.getElementById("gender").value,
+            uses_tobacco: false,
+          },
+        ],
+      },
+      market: "Individual",
+      place: {
+        countyfips: countyFips,
+        state: document.getElementById("state").value,
+        zipcode: document.getElementById("zipcode").value,
+      },
+      year: planYear,
+    };
+
+    fetchPlansAndPopulateIssuers(data);
+});
+
+    
+
+    //Loading animation
+
+    function showLottieAnimation() {
+    const lottieDiv = document.getElementById('lottie-container');
+    lottieDiv.style.display = 'block'; // Show the Lottie container
+
+    const animation = lottie.loadAnimation({
+        container: lottieDiv,
+        renderer: 'svg',
+        loop: true,
+        autoplay: true,
+        path: 'https://lottie.host/embed/409f14e5-a3c9-4cc3-a0bc-8ac6c1f21467/hNFPqtssop.lottie'
+    });
+
+    // Hide the animation container after 5 seconds
+    setTimeout(() => {
+        lottieDiv.style.display = 'none';
+        animation.destroy(); // Optionally stop and destroy the animation to clean up resources
+    }, 5000);
+}
+
+
+//Post to Marketplace API
+
+    function fetchPlansAndPopulateIssuers(data) {
+    const endpointUrl = "https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=d687412e7b53146b2631dc01974ad0a4&limit=25&offset=0";
+
+    fetch(endpointUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      return response.json();
+    })
+    .then(data => {
+      globalPlanData = data.plans;  
+      displayPlans(data);
+      populateIssuers(data);
+    })
+    .catch(error => {
+      console.error('Failed to fetch initial plan data:', error);
+      document.getElementById("validation-message").textContent = "Failed to fetch plans. Please check your inputs and try again.";
+    });
+}
+
+function populateIssuers(data) {
+    const issuerContainer = document.getElementById('issuer-checkboxes');
+    issuerContainer.innerHTML = '';  // Clear previous entries
+
+    let issuers = new Set();
+    if (data && data.plans) {
+        data.plans.forEach(plan => {
+            if (plan.issuer && plan.issuer.name) {
+                issuers.add(plan.issuer.name);
+            }
+        });
+
+        issuers.forEach(issuer => {
+            const label = document.createElement('label');
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.className ='box'
+            checkbox.value = issuer;
+            checkbox.name = 'issuer';
+            label.appendChild(checkbox);
+            label.append(issuer);  // Append the text right next to the checkbox
+            issuerContainer.appendChild(label);
+        });
+    }
+}
+
+
+//Filters
+function applyFilters() {
+    const checkboxes = document.querySelectorAll('#issuer-checkboxes input[type="checkbox"]:checked');
+    const selectedIssuers = Array.from(checkboxes).map(cb => cb.value);
+    const filteredPlans = globalPlanData.filter(plan => selectedIssuers.includes(plan.issuer.name));
+    displayPlans({ plans: filteredPlans });
+}
+
+document.getElementById('apply-filters-button').addEventListener('click', applyFilters);
+  
+
+
+
+
+</script>
+
+</body>
+</html>
