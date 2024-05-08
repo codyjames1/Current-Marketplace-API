@@ -13,6 +13,22 @@
 </head>
 
 <body>
+  <nav class="navbar">
+    <div class="logo">
+        <img class="logo" src="https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/HEALTH-CARE-Plan-Quotes-1.png" alt="Your Logo"> <!-- Replace 'logo.png' with your logo file -->
+    </div>
+    <div class="hamburger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+    <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
   <div class="main-container">
       <div class="sidebar">
         <div class="filters">
@@ -112,6 +128,19 @@
   </div>
 
 <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    hamburger.addEventListener('click', function() {
+        if (navLinks.style.right === "0px") {
+            navLinks.style.right = "-50%";
+        } else {
+            navLinks.style.right = "0";
+        }
+    });
+});
 
 
   // Function to get copay information
