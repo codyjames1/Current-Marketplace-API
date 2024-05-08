@@ -170,6 +170,12 @@ button:hover, input[type="submit"]:hover {
 
 }
 
+#lottie-loader {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 
 .plan {
     display: flex;

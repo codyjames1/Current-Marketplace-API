@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.7.4/lottie.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
 <meta charset="UTF-8">
@@ -105,6 +106,7 @@
           
           
       <div id="results">
+        <div id="lottie-loader" style="display: none;"></div>
         <!-- Results will be displayed here -->
     </div>
     <button id="load-more-button">Load More</button>
@@ -453,6 +455,7 @@ let currentMetalIndex = 0;
 
 function fetchPlansAndPopulateIssuers(data) {
     const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW&limit=10`;
+    showLoadingAnimation(true); // Show loader
 
     fetch(endpointUrl, {
         method: "POST",
@@ -468,13 +471,18 @@ function fetchPlansAndPopulateIssuers(data) {
     })
     .then(dataResponse => {
         console.log(dataResponse); // Log the response
-        globalPlanData = globalPlanData.concat(dataResponse.plans);  // Append new plans
-        populateIssuers({ plans: globalPlanData }); // Ensure issuers are populated here
-        displayPlans({ plans: globalPlanData });  // Redisplay all plans
+        globalPlanData = globalPlanData.concat(dataResponse.plans);
+
+        // Delay the execution of hiding the loader and displaying plans
+        setTimeout(() => {
+            showLoadingAnimation(false); // Hide loader
+            displayPlans({ plans: globalPlanData });  // Redisplay all plans
+        }, 3000); // Delay of 3000 milliseconds (3 seconds)
     })
     .catch(error => {
         console.error('Failed to fetch plan data:', error);
         document.getElementById("validation-message").textContent = "Failed to fetch plans. Please check your inputs and try again.";
+        showLoadingAnimation(false); // Ensure loader is hidden on error
     });
 }
 
@@ -545,6 +553,33 @@ function applyFilters() {
 }
 
 document.getElementById('apply-filters-button').addEventListener('click', applyFilters);
+
+
+let lottieAnimation;
+
+function showLoadingAnimation(show) {
+    const loaderContainer = document.getElementById('lottie-loader');
+
+    if (show) {
+        loaderContainer.style.display = 'block';
+        if (!lottieAnimation) { // Only load the animation if it hasn't been initialized
+            lottieAnimation = lottie.loadAnimation({
+                container: loaderContainer, // the dom element that will contain the animation
+                renderer: 'svg',
+                loop: true,
+                autoplay: true,
+                path: 'https://lottie.host/23ea84ee-97fb-4ab8-aa0b-5c08310adde0/ItIg01L6WY.json' // the path to the animation json
+            });
+        } else {
+            lottieAnimation.goToAndPlay(0); // Restart the animation
+        }
+    } else {
+        loaderContainer.style.display = 'none';
+        if (lottieAnimation) {
+            lottieAnimation.stop();
+        }
+    }
+}
   
 
 
