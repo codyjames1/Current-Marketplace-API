@@ -339,7 +339,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 
 
-@media (max-width: 1200px) {
+@media (max-width: 700px) {
     .main-container, .sidebar, .content-area {
         flex-direction: column;
         width: 100%;
