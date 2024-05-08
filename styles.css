@@ -268,12 +268,20 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   outline:none;
 }
 
+.enroll-button, .details-button {
+  width: calc(100% - 20px);  
+  margin: 10px 10px;  
+  padding: 8px 10px;  
+  display: block;  
+}
+
 
 .enroll-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem; 
-    margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;  
+  justify-content: center;  
+  width: 100%;  
 }
 
 .zero-premium {
@@ -343,7 +351,6 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
     .main-container, .sidebar, .content-area {
         flex-direction: column;
         width: 100%;
-        padding: 10px;
         box-sizing: border-box; 
     }
   
@@ -370,6 +377,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   
     .zero-premium {
       margin-top: 10px;
+      width: 97%;
     }
   
     .plan-deductible {
@@ -384,14 +392,16 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
       border-left: none;
     }
   
-    .enroll-container {
-      flex-direction: column; /* Stack buttons vertically on smaller screens */
-      gap: 10px; /* Adjust gap for vertical stacking */
+    .enroll-button, .details-button {
+      padding: 8px; /* Reduce padding if necessary */
+      margin: 0 auto; /* Center buttons if they're not already */
+      display: block; /* Ensure they stack without overflow */
   }
 
-  .enroll-button, .details-button {
-    width: 100%; /* Adjust width to fill container */
-    padding: 0.5rem; /* Ensure padding is consistent */
+  .enroll-container {
+      flex-direction: column; /* Stack buttons vertically */
+      align-items: center; /* Align buttons to prevent horizontal overflow */
+      gap: 1rem;
   }
   
     #insurance-form, #insurance-form * {

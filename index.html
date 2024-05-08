@@ -497,11 +497,30 @@ function populateIssuers(data) {
 }
 
 
-//Filters
+// Filters
 function applyFilters() {
     const checkboxes = document.querySelectorAll('#issuer-checkboxes input[type="checkbox"]:checked');
     const selectedIssuers = Array.from(checkboxes).map(cb => cb.value);
-    const filteredPlans = globalPlanData.filter(plan => selectedIssuers.includes(plan.issuer.name));
+    const selectedPlanType = document.getElementById('planType').value;
+
+    // Filter by issuer if any checkboxes are checked, otherwise include all
+    let filteredPlans = checkboxes.length === 0 ? globalPlanData : globalPlanData.filter(plan => selectedIssuers.includes(plan.issuer.name));
+
+    // Filter by plan type if a specific type is selected
+    if (selectedPlanType) {
+        filteredPlans = filteredPlans.filter(plan => plan.type === selectedPlanType);
+    }
+
+    // Get selected sorting option
+    const sortOption = document.getElementById('sort').value;
+
+    // Sorting plans based on the selected option
+    if (sortOption === 'premiumLowHigh') {
+        filteredPlans.sort((a, b) => a.premium_w_credit - b.premium_w_credit);
+    } else if (sortOption === 'premiumHighLow') {
+        filteredPlans.sort((a, b) => b.premium_w_credit - a.premium_w_credit);
+    }
+
     displayPlans({ plans: filteredPlans });
 }
 
