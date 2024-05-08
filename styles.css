@@ -40,7 +40,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 .content-area {
     flex-grow: 1; /* Takes up remaining space */
-    padding: 20px;
+    outline: 1px solid red;
 }
 
 
@@ -72,6 +72,7 @@ form {
     padding: 50px;
     border-radius: 10px;
     width: 80%;
+    margin-left: auto;
     margin-right: auto;
     border: 1px solid #cecece ;
     -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
@@ -170,10 +171,11 @@ button:hover, input[type="submit"]:hover {
     padding: 15px;
     background-color: #EEEEEE;
     border-radius: 10px;
+    margin-left: auto;
     margin-right: auto;
     margin-top: 2rem;
     margin-bottom: 15px;
-    width: 87%;
+    width: 80%;
     -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
@@ -219,7 +221,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 .plan-detail {
     font-size: 16px;
-    padding: 5px; 
+    padding: 7px; 
     display: block; 
     width: 100%;
     text-decoration: underline dashed 1px #168aad67;
@@ -278,10 +280,11 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 .enroll-container {
   display: flex;
+  position: relative;
   flex-direction: column;
-  align-items: center;  
-  justify-content: center;  
-  width: 100%;  
+  margin-left: auto; 
+  margin-right: auto;
+  width: 97%;  
 }
 
 .zero-premium {
@@ -389,19 +392,19 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
     }
   
     .plan-details-container {
-      border-left: none;
+      border:none;
     }
   
     .enroll-button, .details-button {
       padding: 8px; /* Reduce padding if necessary */
       margin: 0 auto; /* Center buttons if they're not already */
-      display: block; /* Ensure they stack without overflow */
+      display: block;/* Ensure they stack without overflow */
   }
 
-  .enroll-container {
-      flex-direction: column; /* Stack buttons vertically */
-      align-items: center; /* Align buttons to prevent horizontal overflow */
+  .enroll-container { /* Align buttons to prevent horizontal overflow */
       gap: 1rem;
+      outline: 1px solid red;
+      margin-right: 2rem;
   }
   
     #insurance-form, #insurance-form * {
