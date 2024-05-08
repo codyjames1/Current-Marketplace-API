@@ -104,10 +104,11 @@
       </form>
           
           
-          <div id="results">
-              <!-- Results will be displayed here -->
-          </div>
-      </div>
+      <div id="results">
+        <!-- Results will be displayed here -->
+    </div>
+    <button id="load-more-button">Load More</button>
+</div>
   </div>
 
 <script>
@@ -125,54 +126,61 @@
 
   function displayPlans(data) {
     const resultsDiv = document.getElementById("results");
-    resultsDiv.innerHTML = ""; 
+    // Do not clear resultsDiv.innerHTML here to keep existing plans displayed
 
-    // Logos for conditional display when plans are populated
     const logos = {
-      "UnitedHealthcare": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/United-Healthcare-Logo-1.png",
-      "Aetna": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-53.png",
-      "Blue": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-51.png",
-      "AmeriHealth": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-54.png",
-      "Oscar": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-52.png",
-      "CareSource": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-50.png",
-      "Ambetter from Sunshine Health": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-55.png"
+        "UnitedHealthcare": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/United-Healthcare-Logo-1.png",
+        "Aetna": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-53.png",
+        "Blue": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-51.png",
+        "AmeriHealth": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-54.png",
+        "Oscar": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-52.png",
+        "CareSource": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-50.png",
+        "Ambetter from Sunshine Health": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-55.png"
     };
 
     if (data.plans && data.plans.length > 0) {
-      data.plans.forEach((plan) => {
-        const planDiv = document.createElement("div");
-        planDiv.className = "plan";
-        const header = document.createElement("div");
-        header.className = "plan-header";
+        data.plans.forEach(plan => {
+            const planDiv = document.createElement("div");
+            planDiv.className = "plan";
+            const header = document.createElement("div");
+            header.className = "plan-header";
 
-        // Display appropriate logo based on the issuer's name
-        Object.keys(logos).forEach(key => {
-          if (plan.issuer.name.includes(key)) {
-            const img = document.createElement("img");
-            img.src = logos[key];
-            img.alt = key + " Logo";
-            img.className = "plan-logo";
-            header.appendChild(img);
-          }
+            // Display appropriate logo based on the issuer's name
+            Object.keys(logos).forEach(key => {
+                if (plan.issuer.name.includes(key)) {
+                    const img = document.createElement("img");
+                    img.src = logos[key];
+                    img.alt = key + " Logo";
+                    img.className = "plan-logo";
+                    header.appendChild(img);
+                }
+            });
+
+            const planName = document.createElement("span");
+            planName.textContent = plan.name;
+            planName.className = "plan-name"
+            header.appendChild(planName);
+
+            planDiv.appendChild(header);
+            appendPlanDetails(plan, planDiv);
+            resultsDiv.appendChild(planDiv);
         });
 
-        const planName = document.createElement("span");
-        planName.textContent = plan.name;
-        planName.className = "plan-name"
-        header.appendChild(planName);
-
-
-        planDiv.appendChild(header);
-        appendPlanDetails(plan, planDiv);
-        resultsDiv.appendChild(planDiv);
-      });
+        // Check if we should show the Load More button
+        if (currentMetalIndex < metalLevels.length - 1) {
+            document.getElementById("load-more-button").style.display = 'block';
+        } else {
+            document.getElementById("load-more-button").style.display = 'none';
+        }
     } else {
-      const noPlans = document.createElement("div");
-      noPlans.className = "plan-detail";
-      noPlans.innerText = "No plans found.";
-      resultsDiv.appendChild(noPlans);
+        if (!resultsDiv.hasChildNodes()) {  // Check if no plans have ever been loaded
+            const noPlans = document.createElement("div");
+            noPlans.className = "plan-detail";
+            noPlans.innerText = "No plans found.";
+            resultsDiv.appendChild(noPlans);
+        }
     }
-  }
+}
 
   //income formating for dollar amount
   function formatIncome() {
@@ -337,7 +345,7 @@ function validateZipCode() {
         return;
     }
 
-    const apiUrl = `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=d687412e7b53146b2631dc01974ad0a4`;
+    const apiUrl = `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW`;
 
     fetch(apiUrl)
     .then(response => {
@@ -381,43 +389,38 @@ function checkStateMarketplace(state) {
  
 
   
-let globalPlanData = [];  // store all the plans globally
+let globalPlanData = [];  // Store all the plans globally
 
-
-  document.getElementById("insurance-form").addEventListener("submit", function (event) {
+document.getElementById("insurance-form").addEventListener("submit", function (event) {
     event.preventDefault();
-    const countyFips = document.getElementById("countyfips").value;
-    const planYear = parseInt(document.getElementById("year").value);
 
-    if (!countyFips || isNaN(planYear)) {
-      document.getElementById("validation-message").innerText = "Please validate the address and enter a valid plan year.";
-      return;
-    }
-
-    const data = {
-      household: {
-        income: parseInt(document.getElementById("income").value),
-        people: [
-          {
-            age: parseInt(document.getElementById("age").value),
-            aptc_eligible: true,
-            gender: document.getElementById("gender").value,
-            uses_tobacco: false,
-          },
-        ],
-      },
-      market: "Individual",
-      place: {
-        countyfips: countyFips,
-        state: document.getElementById("state").value,
-        zipcode: document.getElementById("zipcode").value,
-      },
-      year: planYear,
+    // Gather data from the form
+    formData = {
+        household: {
+            income: parseInt(document.getElementById("income").value),
+            people: [{
+                age: parseInt(document.getElementById("age").value),
+                aptc_eligible: true,
+                gender: document.getElementById("gender").value,
+                uses_tobacco: false,
+            }],
+        },
+        market: "Individual",
+        place: {
+            countyfips: document.getElementById("countyfips").value,
+            state: document.getElementById("state").value,
+            zipcode: document.getElementById("zipcode").value,
+        },
+        year: parseInt(document.getElementById("year").value),
+        filter: {
+            metal_levels: [metalLevels[currentMetalIndex]]
+        }
     };
 
-    fetchPlansAndPopulateIssuers(data);
+    fetchPlansAndPopulateIssuers(formData);
 });
 
+    
     
 
     //Loading animation
@@ -444,31 +447,48 @@ let globalPlanData = [];  // store all the plans globally
 
 //Post to Marketplace API
 
-    function fetchPlansAndPopulateIssuers(data) {
-    const endpointUrl = "https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=d687412e7b53146b2631dc01974ad0a4&limit=25&offset=0";
+let formData = {};  // Store the form data globally
+let metalLevels = ["Bronze", "Silver", "Gold"];
+let currentMetalIndex = 0;
+
+function fetchPlansAndPopulateIssuers(data) {
+    const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW&limit=10`;
 
     fetch(endpointUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-      },
-      body: JSON.stringify(data)
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify(data)
     })
     .then(response => {
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      return response.json();
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
     })
-    .then(data => {
-      globalPlanData = data.plans;  
-      displayPlans(data);
-      populateIssuers(data);
+    .then(dataResponse => {
+        console.log(dataResponse); // Log the response
+        globalPlanData = globalPlanData.concat(dataResponse.plans);  // Append new plans
+        populateIssuers({ plans: globalPlanData }); // Ensure issuers are populated here
+        displayPlans({ plans: globalPlanData });  // Redisplay all plans
     })
     .catch(error => {
-      console.error('Failed to fetch initial plan data:', error);
-      document.getElementById("validation-message").textContent = "Failed to fetch plans. Please check your inputs and try again.";
+        console.error('Failed to fetch plan data:', error);
+        document.getElementById("validation-message").textContent = "Failed to fetch plans. Please check your inputs and try again.";
     });
 }
+
+document.getElementById("load-more-button").addEventListener("click", function() {
+    if (currentMetalIndex < metalLevels.length - 1) {
+        currentMetalIndex++;  // Move to the next metal level
+        formData.filter.metal_levels = [metalLevels[currentMetalIndex]];  // Update metal level only
+
+        fetchPlansAndPopulateIssuers(formData);
+    } else {
+        console.log("No more metal levels to load.");
+    }
+});
+//Populate filters with plan data 
 
 function populateIssuers(data) {
     const issuerContainer = document.getElementById('issuer-checkboxes');
