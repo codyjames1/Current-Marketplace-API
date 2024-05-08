@@ -26,20 +26,25 @@ body, html {
 
 .nav-links {
   list-style: none;
+  border: 1px solid white;
+  border-radius: 10px 0 0 0;
+  text-align: center;
   position: fixed;
   background-color: rgb(231, 239, 253);
-  width: 250px;  /* Fixed width might work better for consistent behavior */
+  width: 100px;  /* Fixed width might work better for consistent behavior */
   height: 100%;
   top: 0;
   right: -100%; /* Ensure this is slightly more than the width to fully hide it */
   transition: right 0.3s;
   z-index: 1000;  /* Ensures it stays on top of other content if needed */
-  margin-top: 3rem;
+  margin-top: 5rem;
+  -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
+-moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
+box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .nav-links li {
   padding: 15px;
-  text-align: right;
 }
 
 .nav-links li a {
@@ -197,6 +202,10 @@ button:focus {
     outline: none; 
 }
 
+.premium-before-tax {
+  color: red !Important;
+  text-decoration: line-through;
+}
 
 button, input[type="submit"] {
     background: #1e6091;
