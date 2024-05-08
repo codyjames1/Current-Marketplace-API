@@ -198,8 +198,8 @@ function appendPlanDetails(plan, planDiv) {
     // Access the existing header that contains the logo and plan name
     const header = planDiv.querySelector('.plan-header');
 
-     // Fetching and displaying the rating
-     const ratingInfo = plan.quality_rating;
+    // Fetching and displaying the rating
+    const ratingInfo = plan.quality_rating;
     const ratingDiv = document.createElement("div");
     ratingDiv.className = "plan-rating";
     ratingDiv.style.color = "#ffc300";
@@ -215,7 +215,6 @@ function appendPlanDetails(plan, planDiv) {
         ratingDiv.textContent = "Not Rated";
     }
     
-    // Placing the rating above the deductible
     header.appendChild(ratingDiv);
 
     // Get the in-network deductible
@@ -225,14 +224,10 @@ function appendPlanDetails(plan, planDiv) {
     // Create a deductible display if applicable
     const deductibleDiv = document.createElement("div");
     deductibleDiv.className = "plan-deductible";
-
-    // Create the icon element
     const icon = document.createElement("i");
     icon.className = "fa-solid fa-heart-pulse";
     icon.style.marginRight = "5px";
     icon.style.color = "#3D91FF";  
-
-    // Append the icon and text to the deductibleDiv
     deductibleDiv.appendChild(icon);
     deductibleDiv.append(deductibleAmount); 
     header.appendChild(deductibleDiv);  
@@ -241,17 +236,14 @@ function appendPlanDetails(plan, planDiv) {
     detailsContainer.className = "plan-details-container";
     planDiv.appendChild(detailsContainer);
 
-    // Optional: Highlight $0 Premium differently
-    if (plan.premium_w_credit === 0) {
-        const zeroPremiumDetail = document.createElement("div");
-        zeroPremiumDetail.className = "plan-detail zero-premium";
-        zeroPremiumDetail.innerHTML = "<span>$0 Premium</span>"; // Highlighting $0 Premiums distinctly
-        detailsContainer.appendChild(zeroPremiumDetail);
-    }
+    // Displaying the "Premium with Credit" for all plans
+    const premiumWithCreditDetail = document.createElement("div");
+    premiumWithCreditDetail.className = "plan-detail zero-premium"; // You can change the class name if it's not appropriate
+    premiumWithCreditDetail.innerHTML = `<span>Monthly Premium: $${plan.premium_w_credit.toFixed(2)}</span>`;
+    detailsContainer.appendChild(premiumWithCreditDetail);
 
     const details = [
         { label: 'Premium Before Tax Credit:', value: `$${plan.premium.toFixed(2)}` },
-        { label: 'Premium with Credit:', value: `$${plan.premium_w_credit.toFixed(2)}` },
         { label: 'Type:', value: plan.type },
         { label: 'Specialist Copay:', value: getCopay(plan.benefits, "SPECIALIST_VISIT") },
         { label: 'Primary Care Copay:', value: getCopay(plan.benefits, "PRIMARY_CARE_VISIT_TO_TREAT_AN_INJURY_OR_ILLNESS") }

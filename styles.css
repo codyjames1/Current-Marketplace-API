@@ -339,7 +339,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 
 
-@media (max-width: 700px) {
+@media (max-width: 760px) {
     .main-container, .sidebar, .content-area {
         flex-direction: column;
         width: 100%;
@@ -384,9 +384,15 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
       border-left: none;
     }
   
-    .details-button {
-      margin-right: 1rem;
-    }
+    .enroll-container {
+      flex-direction: column; /* Stack buttons vertically on smaller screens */
+      gap: 10px; /* Adjust gap for vertical stacking */
+  }
+
+  .enroll-button, .details-button {
+    width: 100%; /* Adjust width to fill container */
+    padding: 0.5rem; /* Ensure padding is consistent */
+  }
   
     #insurance-form, #insurance-form * {
         box-sizing: border-box; /* Apply box-sizing to all child elements */
