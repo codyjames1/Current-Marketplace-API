@@ -460,20 +460,26 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   font-size: 10px !Important ;
 }
 
-.enrollment-form {
-}
-
-
-
-
 .modal-content {
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: transparent;
-  width: 60%;
+  margin: 5% auto; /* Adjusted for auto vertical margin */
+  background-color: transparent; /* Changed to white for better visibility */
+  width: 60%; /* Adjust width as necessary */
+  max-height: 80vh; /* Maximum height to 80% of the viewport height */
+  overflow-y: auto; 
+  overflow-x: hidden;/* Enable vertical scrolling */
+  padding: 20px; /* Add padding for spacing inside the modal *//* Optional: Rounds the corners */
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+}
+
+.modal-content::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
+}
+
+.enrollment-form {
 }
 
 .close {
@@ -497,7 +503,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   margin-left: auto;
   margin-right: auto;
   width: auto;
-  height: auto;
+  padding: 2rem;
 }
 
 
@@ -508,6 +514,10 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 .callus {
   width: 50%;
   text-align: center;
+}
+
+.enrollment-form input, .enrollment-form select, .enrollment-form button {
+  height: 1.5rem;
 }
 
 
@@ -612,44 +622,35 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   }
 
   .modal-content {
-    width: 80%; /* Make the modal wider on smaller screens */
-    margin-top: 20px;  /* Increase padding for better readability */
-    background-color: transparent; /* Ensure background is solid for readability */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Enhance the shadow for better focus on content */
+    justify-content: center;
+    align-items: center;
+    text-align: center;/* Adjusted for auto vertical margin */
+    background-color: transparent; /* Changed to white for better visibility */
+    width: 90%; /* Adjust width as necessary */
+    max-height: 100vh; /* Maximum height to 80% of the viewport height */
+    overflow-y: auto; 
+    overflow-x: hidden;
+    padding: 0px 0px 0px 0px;/* Add padding for spacing inside the modal *//* Optional: Rounds the corners */
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  }
+  
+  .modal-content::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+  }
+
+  .enrollment-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-right: auto;
-}
+    padding: 2rem;
+  }
 
-.enrollment-form input, .enrollment-form select, .enrollment-form button {
-    width: 100%; /* Full width for form elements */
-    margin-top: 10px; /* Add more space between form elements */
-}
-
-.close {
-    top: 15px;
-    right: 15px; /* Position close button better in the corner */
-    font-size: 24px; /* Slightly smaller close button */
-}
-
-#enrollnow {
-  display:flex ;
-  justify-content: center;
-  align-items: center;
-  margin-left: auto;
-  margin-right: auto;
-  width: auto;
-  height: auto;
-}
-
-/* Ensure the modal uses all available space */
-.modal {
-    overflow-y: auto; /* Allow scrolling within the modal on small screens */
-}
-
-.modal-content {
-  display: flex;
-  width: 100%; /* Even wider on very small screens */
-  margin-top: 10%; /* More top margin to adjust for mobile browser UI */
-}
+  .enrollment-form input {
+    height: 2rem;
+  }
+ 
 
     
 
