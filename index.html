@@ -15,7 +15,7 @@
 <body>
   <nav class="navbar">
     <div class="logo">
-        <img class="logo" src="https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/HEALTH-CARE-Plan-Quotes-1.png" alt="Your Logo"> <!-- Replace 'logo.png' with your logo file -->
+        <img class="logo" src="https://healthcareplanquotes.com/wp-content/uploads/2024/05/HEALTH-CARE-Plan-Quotes-1-1.png" alt="Your Logo"> <!-- Replace 'logo.png' with your logo file -->
     </div>
     <div class="hamburger">
         <div class="line"></div>
@@ -60,7 +60,7 @@
       </div>
       <div class="video-container">
         <video width="100%" controls>
-            <source src="https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-video-Made-with-Clipchamp.mp4" type="video/mp4">
+            <source src="https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-video-Made-with-Clipchamp.mp4" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
@@ -125,9 +125,30 @@
     <button id="load-more-button">Load More</button>
 </div>
   </div>
+<!--Enrollment Module-->
+  <div id="enrollmentModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <form class="enrollment-form" id="enrollmentForm">
+        <h2 class="right-plan">Let's finish your<br><span style="background-color:#7cb3fa; padding:5px; border-radius:30px;">enrollment</span></h2>
+        <input type="text" name="planName" id="planNameInput" readonly>
+        <input type="text" name="firstName" placeholder="First Name" required>
+        <input type="text" name="lastName" placeholder="Last Name" required>
+        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input type="text" name="email" placeholder="Email Address" required>
+        <input type="text" name="dob" placeholder="Date of Birth" required>
+        <input type="text" name="gender" id="genderInput" readonly>
+        <input type="hidden" name="planId" id="planIdInput">
+        <input type="hidden" name="zipcode" id="enrollzipcode">
+        <input type="hidden" name="income" id="enrollincome">
+        
+        <button id="enrollnow" type="submit">Submit Enrollment</button>
+      </form>
+    </div>
+  </div>
 
 <script>
-
+//Catch cookie from redirects to page
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
     const zipcode = urlParams.get('zipcode');
@@ -175,13 +196,13 @@ document.addEventListener('DOMContentLoaded', function() {
     resultsDiv.innerHTML = "";  // Clear to re-render from scratch as a test
 
     const logos = {
-        "UnitedHealthcare": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/United-Healthcare-Logo-1.png",
-        "Aetna": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-53.png",
-        "Blue": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-51.png",
-        "AmeriHealth": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-54.png",
-        "Oscar": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-52.png",
-        "CareSource": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-50.png",
-        "Ambetter from Sunshine Health": "https://uxi.1ba.myftpupload.com/wp-content/uploads/2024/05/Untitled-design-55.png"
+        "UnitedHealthcare": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/United-Healthcare-Logo-1.png",
+        "Aetna": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-53-e1715043743930.png",
+        "Blue": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-51-e1715043725268.png",
+        "AmeriHealth": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-54-e1715043752114.png",
+        "Oscar": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-52-e1715043734184.png",
+        "CareSource": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-50-e1715043715236.png",
+        "Ambetter from Sunshine Health": "https://healthcareplanquotes.com/wp-content/uploads/2024/05/Untitled-design-55.png"
     };
 
     if (data.plans && data.plans.length > 0) {
@@ -328,6 +349,7 @@ function getDeductibleAmount(plan) {
     detailsButton.target = "_blank";
     buttonContainer.appendChild(detailsButton);
     detailsContainer.appendChild(buttonContainer);
+    setupEnrollButtons();
 }
 
 
@@ -603,7 +625,40 @@ function applyFilters() {
 
 document.getElementById('apply-filters-button').addEventListener('click', applyFilters);
   
+//Enrollment Module
+function setupEnrollButtons() {
+    const enrollButtons = document.querySelectorAll('.enroll-button');
+    const modal = document.getElementById('enrollmentModal');
+    const span = document.getElementsByClassName("close")[0];
 
+    enrollButtons.forEach(button => {
+        button.onclick = function() {
+            const planDiv = this.closest('.plan');
+            const planId = planDiv.getAttribute('data-plan-id');
+            const planName = planDiv.querySelector('.plan-name').textContent;
+            const gender = document.getElementById('gender').value;
+            const income = document.getElementById('income').value;
+            const zipcode = document.getElementById('zipcode').value;
+            
+            document.getElementById('planIdInput').value = planId;
+            document.getElementById('planNameInput').value = planName;
+            document.getElementById('genderInput').value = gender;
+            document.getElementById('enrollincome').value = income;
+            document.getElementById('enrollzipcode').value = zipcode;
+            modal.style.display = "block";
+        }
+    });
+
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+}
 
 
 

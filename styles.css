@@ -441,6 +441,61 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: hidden; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.enrollment-form input {
+  width: 100%;
+}
+
+
+
+.modal-content {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 2rem;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: transparent;
+  width: 50%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#enrollnow {
+  display:flex ;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height: auto;
+}
+
+
+
 
 
 @media (max-width: 760px) {
@@ -540,6 +595,48 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   .logo {
     margin-left: 0;
   }
+
+  .modal-content {
+    width: 90%; /* Make the modal wider on smaller screens */
+    margin-top: 20px; /* Reduce the top margin */
+    padding: 20px; /* Increase padding for better readability */
+    background-color: transparent; /* Ensure background is solid for readability */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Enhance the shadow for better focus on content */
+}
+
+.enrollment-form input, .enrollment-form select, .enrollment-form button {
+    width: 100%; /* Full width for form elements */
+    margin-top: 10px; /* Add more space between form elements */
+}
+
+.close {
+    top: 15px;
+    right: 15px; /* Position close button better in the corner */
+    font-size: 24px; /* Slightly smaller close button */
+}
+
+#enrollnow {
+  display:flex ;
+  justify-content: center;
+  align-items: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: auto;
+  height: auto;
+}
+
+/* Ensure the modal uses all available space */
+.modal {
+    overflow-y: auto; /* Allow scrolling within the modal on small screens */
+}
+
+/* Optional: Adjust font sizes and other elements as needed */
+.modal-content h2 {
+    font-size: 20px; /* Smaller font size for headers */
+}
+.modal-content p {
+    font-size: 16px; /* Smaller font size for text to avoid overcrowding */
+}
 
     
 
