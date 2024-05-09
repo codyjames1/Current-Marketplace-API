@@ -103,7 +103,7 @@
     </div>
         </div>
         
-        <div id="step4" style="display:none;">
+        <div id="step4" style="display:none;" class="form-step final-step">
           <label for="year">Plan Year:</label>
           <select id="year" name="year" required>
               <option value="2024">2024</option>
@@ -727,6 +727,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     setupEnrollButtons(); // Ensure other functions are also initialized
 });
+
+//prevent early submission with enter key
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('insurance-form');
+    const inputs = form.querySelectorAll('input');
+
+    inputs.forEach(input => {
+        input.addEventListener('keydown', function(event) {
+            // Check if the Enter key was pressed
+            if (event.key === 'Enter') {
+                // Prevent the default form submit if not on the final step
+                if (!this.closest('.form-step').classList.contains('final-step')) {
+                    event.preventDefault();
+                    // Optionally, move to the next input or perform other logic
+                    return false;
+                }
+            }
+        });
+    });
+  });
+
 
 </script>
 
