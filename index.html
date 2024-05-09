@@ -151,6 +151,15 @@ document.addEventListener('DOMContentLoaded', function() {
     return "N/A";
   }
 
+  function getGenericDrugCopay(benefits) {
+    const genericDrugBenefit = benefits.find(benefit => benefit.type === "GENERIC_DRUGS");
+    if (genericDrugBenefit && genericDrugBenefit.cost_sharings.length > 0) {
+        const inNetworkCopay = genericDrugBenefit.cost_sharings.find(cs => cs.network_tier === "In-Network");
+        return inNetworkCopay ? `$${inNetworkCopay.copay_amount}` : "Not Available";
+    }
+    return "Not Covered";
+}
+
   function displayPlans(data) {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";  // Clear to re-render from scratch as a test
@@ -256,6 +265,8 @@ function appendPlanDetails(plan, planDiv) {
     // Get the in-network deductible
     const deductibleInfo = plan.deductibles.find(d => d.network_tier === "In-Network");
     const deductibleAmount = deductibleInfo ? `$${deductibleInfo.amount} Deductible` : "No Deductible Info";
+    
+
 
     // Create a deductible display if applicable
     const deductibleDiv = document.createElement("div");
@@ -274,13 +285,14 @@ function appendPlanDetails(plan, planDiv) {
 
     // Displaying the "Premium with Credit" for all plans
     const premiumWithCreditDetail = document.createElement("div");
-    premiumWithCreditDetail.className = "plan-detail zero-premium"; // You can change the class name if it's not appropriate
+    premiumWithCreditDetail.className = "plan-detail zero-premium"; 
     premiumWithCreditDetail.innerHTML = `<span>Monthly Premium: $${plan.premium_w_credit.toFixed(2)}</span>`;
     detailsContainer.appendChild(premiumWithCreditDetail);
 
     const details = [
         { label: 'Premium Was:', value: `$${plan.premium.toFixed(2)}`, specialClass: 'premium-before-tax' },
         { label: 'Type:', value: plan.type },
+        { label: 'Generic Drug Copay:', value: getGenericDrugCopay(plan.benefits) },
         { label: 'Specialist Copay:', value: getCopay(plan.benefits, "SPECIALIST_VISIT") },
         { label: 'Primary Care Copay:', value: getCopay(plan.benefits, "PRIMARY_CARE_VISIT_TO_TREAT_AN_INJURY_OR_ILLNESS") }
     ];
@@ -316,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var initialStep = document.getElementById("step1");
     if (initialStep) {
         initialStep.style.display = "block";
-        setTimeout(() => initialStep.classList.add("active-step"), 15); // Short delay before adding active class
+        setTimeout(() => initialStep.classList.add("active-step"), 15); 
     }
 });
 
@@ -497,11 +509,11 @@ function fetchPlansAndPopulateIssuers(data) {
         return response.json();
     })
     .then(dataResponse => {
-        console.log(dataResponse); // Log the response
+        console.log(dataResponse); 
         const newPlans = dataResponse.plans.filter(plan => !globalPlanData.some(p => p.id === plan.id));
         globalPlanData = globalPlanData.concat(newPlans);
         displayPlans({ plans: globalPlanData });
-        populateIssuers({plans: globalPlanData});  // Ensure this is called here
+        populateIssuers({plans: globalPlanData});  
     })
     .catch(error => {
         console.error('Failed to fetch plan data:', error);
@@ -511,12 +523,12 @@ function fetchPlansAndPopulateIssuers(data) {
 
 document.getElementById("load-more-button").addEventListener("click", function() {
     if (currentMetalIndex < metalLevels.length - 1) {
-        formData.filter.metal_levels = [metalLevels[currentMetalIndex + 1]];  // Prepare the next level
+        formData.filter.metal_levels = [metalLevels[currentMetalIndex + 1]];
         fetchPlansAndPopulateIssuers(formData);
         currentMetalIndex++;  // Increment after preparing fetch
     } else {
         console.log("No more metal levels to load.");
-        this.style.display = 'none';  // Optionally hide the button
+        this.style.display = 'none';  
     }
 });
 
@@ -542,7 +554,7 @@ function populateIssuers(data) {
             checkbox.value = issuer;
             checkbox.name = 'issuer';
             label.appendChild(checkbox);
-            label.append(issuer);  // Append the text right next to the checkbox
+            label.append(issuer);  
             issuerContainer.appendChild(label);
         });
     }
