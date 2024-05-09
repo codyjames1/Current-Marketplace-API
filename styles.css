@@ -451,13 +451,16 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
-  overflow: hidden; /* Enable scroll if needed */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-.enrollment-form input {
-  width: 100%;
-  height: auto;
+
+
+.disclaimer {
+  font-size: 10px !Important ;
+}
+
+.enrollment-form {
 }
 
 
@@ -470,7 +473,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   margin-left: auto;
   margin-right: auto;
   background-color: transparent;
-  width: 50%;
+  width: 60%;
 }
 
 .close {
@@ -600,11 +603,11 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   }
 
   .modal-content {
-    width: 90%; /* Make the modal wider on smaller screens */
-    margin-top: 20px; /* Reduce the top margin */
-    padding: 20px; /* Increase padding for better readability */
+    width: 80%; /* Make the modal wider on smaller screens */
+    margin-top: 20px;  /* Increase padding for better readability */
     background-color: transparent; /* Ensure background is solid for readability */
     box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Enhance the shadow for better focus on content */
+    margin-right: auto;
 }
 
 .enrollment-form input, .enrollment-form select, .enrollment-form button {
@@ -633,12 +636,10 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
     overflow-y: auto; /* Allow scrolling within the modal on small screens */
 }
 
-/* Optional: Adjust font sizes and other elements as needed */
-.modal-content h2 {
-    font-size: 20px; /* Smaller font size for headers */
-}
-.modal-content p {
-    font-size: 16px; /* Smaller font size for text to avoid overcrowding */
+.modal-content {
+  display: flex;
+  width: 100%; /* Even wider on very small screens */
+  margin-top: 10%; /* More top margin to adjust for mobile browser UI */
 }
 
     
