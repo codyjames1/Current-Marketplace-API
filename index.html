@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 
 <meta charset="UTF-8">
@@ -128,15 +129,17 @@
 <!--Enrollment Module-->
   <div id="enrollmentModal" class="modal">
     <div class="modal-content">
-      <span class="close">&times;</span>
+      
       <form class="enrollment-form" id="enrollmentForm">
+        <span class="close">&times;</span>
         <h2 class="right-plan">Let's finish your<br><span style="background-color:#7cb3fa; padding:5px; border-radius:30px;">enrollment</span></h2>
+        <h3>Wow! You picked a great plan!</h3>
         <input type="text" name="planName" id="planNameInput" readonly>
         <input type="text" name="firstName" placeholder="First Name" required>
         <input type="text" name="lastName" placeholder="Last Name" required>
         <input type="text" name="phone" placeholder="Phone Number" required>
         <input type="text" name="email" placeholder="Email Address" required>
-        <input type="text" name="dob" placeholder="Date of Birth" required>
+        <input type="text" name="dob" placeholder="Date of Birth" id="dobInput" required>
         <input type="text" name="gender" id="genderInput" readonly>
         <input type="hidden" name="planId" id="planIdInput">
         <input type="hidden" name="zipcode" id="enrollzipcode">
@@ -629,16 +632,17 @@ document.getElementById('apply-filters-button').addEventListener('click', applyF
 function setupEnrollButtons() {
     const enrollButtons = document.querySelectorAll('.enroll-button');
     const modal = document.getElementById('enrollmentModal');
-    const span = document.getElementsByClassName("close")[0];
+    const closeSpan = document.querySelector('.close'); // Assuming there's only one close button
 
     enrollButtons.forEach(button => {
-        button.onclick = function() {
+        button.addEventListener('click', function() {
             const planDiv = this.closest('.plan');
             const planId = planDiv.getAttribute('data-plan-id');
             const planName = planDiv.querySelector('.plan-name').textContent;
             const gender = document.getElementById('gender').value;
             const income = document.getElementById('income').value;
             const zipcode = document.getElementById('zipcode').value;
+            const zipcode = document.getElementById('dobInput')
             
             document.getElementById('planIdInput').value = planId;
             document.getElementById('planNameInput').value = planName;
@@ -646,20 +650,58 @@ function setupEnrollButtons() {
             document.getElementById('enrollincome').value = income;
             document.getElementById('enrollzipcode').value = zipcode;
             modal.style.display = "block";
+        });
+    });
+
+    closeSpan.addEventListener('click', function() {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
         }
     });
 
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
+    document.getElementById('enrollmentForm').addEventListener('submit', submitEnrollmentToCRM);
 }
 
+function submitEnrollmentToCRM(event) {
+    event.preventDefault();
+
+    const endpoint = 'https://api.chasedatacorp.com/HttpImport/InjectLead.php';
+    const params = new URLSearchParams({
+        token: '9b8ad439-3450-4ce9-8f4a-62ba090de965',
+        accid: 'fchc',
+        Campaign: 'ACA',
+        Subcampaign: 'Healthcareplanquotes.com',
+        FirstName: document.getElementById('enrollmentForm').querySelector('[name="firstName"]').value,
+        LastName: document.getElementById('enrollmentForm').querySelector('[name="lastName"]').value,
+        PrimaryPhone: document.getElementById('enrollmentForm').querySelector('[name="phone"]').value,
+        adv_Gender: document.getElementById('genderInput').value,
+        adv_Additional__Notes: document.getElementById('enrollincome').value,
+        Notes: document.getElementById('planNameInput').value,
+        adv_Policy__ID: document.getElementById('planIdInput').value,
+        ZipCode: document.getElementById('enrollzipcode').value,
+        State: document.getElementById('state').value
+    });
+
+    fetch(`${endpoint}?${params.toString()}`, {
+        method: 'POST'
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log("Enrollment submitted successfully!", result);
+        alert("Enrollment submitted successfully!");
+        modal.style.display = "none";
+    })
+    .catch(error => {
+        console.error('Error submitting enrollment:', error);
+        alert("Failed to submit enrollment.");
+    });
+}
+
+document.addEventListener('DOMContentLoaded', setupEnrollButtons);
 
 
 </script>
