@@ -8,6 +8,7 @@ body, html {
     height: 100%;
     font-family: "Roboto", sans-serif;
     background-color: rgb(231, 239, 253);
+    
 }
 
 .navbar {
@@ -168,6 +169,12 @@ input[type="text"], input[type="number"], select, button {
     padding: 10px;
     font-family: roboto;
     font-size: 20px;
+    
+    
+}
+
+::-webkit-inner-spin-button {
+  display: none;
 }
 
 .next, .back {
@@ -522,6 +529,10 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
       border: 1px solid red;
       border-radius: 10px 0px 0px 0px;
       height: 91vh;
+  }
+
+  .logo {
+    margin-left: 0;
   }
 
     
