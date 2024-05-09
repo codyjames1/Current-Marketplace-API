@@ -501,6 +501,15 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 
+.callbtn {
+  text-decoration: none;
+}
+
+.callus {
+  width: 50%;
+  text-align: center;
+}
+
 
 
 
