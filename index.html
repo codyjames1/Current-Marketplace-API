@@ -53,6 +53,7 @@
               <select id="sort">
                   <option value="premiumLowHigh">Premium: Low to High</option>
                   <option value="premiumHighLow">Premium: High to Low</option>
+                  <option value="deductibleLowHigh">Deductible: Low to High</option>
               </select>
           </div>
           <button class="apply-filters-button" id="apply-filters-button" onclick="applyFilters()">Apply Filters</button>
@@ -126,6 +127,14 @@
   </div>
 
 <script>
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const zipcode = urlParams.get('zipcode');
+    if (zipcode) {
+        document.getElementById('zipcode').value = zipcode; // Make sure this input has an ID of 'zipcode'
+    }
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     const hamburger = document.querySelector('.hamburger');
@@ -237,19 +246,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 }
 
+function getDeductibleAmount(plan) {
+    const deductibleInfo = plan.deductibles.find(d => d.network_tier === "In-Network");
+    return deductibleInfo ? deductibleInfo.amount : Infinity; // Return a high value for plans without a deductible
+}
+
   // function to append plan details with structured layout
-function appendPlanDetails(plan, planDiv) {
-  planDiv.setAttribute('data-plan-id', plan.id);
-    // Access the existing header that contains the logo and plan name
+  function appendPlanDetails(plan, planDiv) {
+    planDiv.setAttribute('data-plan-id', plan.id);
     const header = planDiv.querySelector('.plan-header');
 
-    // Fetching and displaying the rating
+    // Display rating
     const ratingInfo = plan.quality_rating;
     const ratingDiv = document.createElement("div");
     ratingDiv.className = "plan-rating";
     ratingDiv.style.color = "#ffc300";
     ratingDiv.style.marginTop = "5px";
-    
     if (ratingInfo.available && ratingInfo.global_rating) {
         for (let i = 0; i < 5; i++) {
             const star = document.createElement("i");
@@ -259,16 +271,11 @@ function appendPlanDetails(plan, planDiv) {
     } else {
         ratingDiv.textContent = "Not Rated";
     }
-    
     header.appendChild(ratingDiv);
 
-    // Get the in-network deductible
-    const deductibleInfo = plan.deductibles.find(d => d.network_tier === "In-Network");
-    const deductibleAmount = deductibleInfo ? `$${deductibleInfo.amount} Deductible` : "No Deductible Info";
-    
-
-
-    // Create a deductible display if applicable
+    // Display deductible
+    const deductibleAmount = getDeductibleAmount(plan);
+    const deductibleDisplay = deductibleAmount !== Infinity ? `$${deductibleAmount} Deductible` : "No Deductible Info";
     const deductibleDiv = document.createElement("div");
     deductibleDiv.className = "plan-deductible";
     const icon = document.createElement("i");
@@ -276,8 +283,9 @@ function appendPlanDetails(plan, planDiv) {
     icon.style.marginRight = "5px";
     icon.style.color = "#3D91FF";  
     deductibleDiv.appendChild(icon);
-    deductibleDiv.append(deductibleAmount); 
-    header.appendChild(deductibleDiv);  
+    deductibleDiv.append(deductibleDisplay);
+    header.appendChild(deductibleDiv);
+
 
     const detailsContainer = document.createElement("div");
     detailsContainer.className = "plan-details-container";
@@ -446,6 +454,8 @@ document.getElementById("insurance-form").addEventListener("submit", function (e
                 uses_tobacco: false,
             }],
         },
+        limit: 10,
+        offset:0,
         market: "Individual",
         place: {
             countyfips: document.getElementById("countyfips").value,
@@ -583,6 +593,8 @@ function applyFilters() {
         filteredPlans.sort((a, b) => a.premium_w_credit - b.premium_w_credit);
     } else if (sortOption === 'premiumHighLow') {
         filteredPlans.sort((a, b) => b.premium_w_credit - a.premium_w_credit);
+    } else if (sortOption === 'deductibleLowHigh') {
+        filteredPlans.sort((a, b) => getDeductibleAmount(a) - getDeductibleAmount(b));
     }
 
     displayPlans({ plans: filteredPlans });
