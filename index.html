@@ -134,6 +134,7 @@
         <span class="close">&times;</span>
         <h2 class="right-plan">Let's finish your<br><span style="background-color:#7cb3fa; padding:5px; border-radius:30px;">enrollment</span></h2>
         <h3>Wow! You picked a great plan!</h3>
+        <p>Your application will be submitted to an agent for underwriting.</p>
         <input type="text" name="planName" id="planNameInput" readonly>
         <input type="text" name="firstName" placeholder="First Name" required>
         <input type="text" name="lastName" placeholder="Last Name" required>
@@ -642,13 +643,14 @@ function setupEnrollButtons() {
             const gender = document.getElementById('gender').value;
             const income = document.getElementById('income').value;
             const zipcode = document.getElementById('zipcode').value;
-            const zipcode = document.getElementById('dobInput')
+            const dob = document.getElementById('dobInput').value;
             
             document.getElementById('planIdInput').value = planId;
             document.getElementById('planNameInput').value = planName;
             document.getElementById('genderInput').value = gender;
             document.getElementById('enrollincome').value = income;
             document.getElementById('enrollzipcode').value = zipcode;
+            document.getElementById('dobInput').value = dob;
             modal.style.display = "block";
         });
     });
@@ -678,12 +680,13 @@ function submitEnrollmentToCRM(event) {
         FirstName: document.getElementById('enrollmentForm').querySelector('[name="firstName"]').value,
         LastName: document.getElementById('enrollmentForm').querySelector('[name="lastName"]').value,
         PrimaryPhone: document.getElementById('enrollmentForm').querySelector('[name="phone"]').value,
+        Notes: document.getElementById('planNameInput').value,
         adv_Gender: document.getElementById('genderInput').value,
         adv_Additional__Notes: document.getElementById('enrollincome').value,
-        Notes: document.getElementById('planNameInput').value,
         adv_Policy__ID: document.getElementById('planIdInput').value,
         ZipCode: document.getElementById('enrollzipcode').value,
-        State: document.getElementById('state').value
+        State: document.getElementById('state').value,
+        adv_Date__of__Birth: document.getElementById('dobInput').value 
     });
 
     fetch(`${endpoint}?${params.toString()}`, {
@@ -691,7 +694,6 @@ function submitEnrollmentToCRM(event) {
     })
     .then(response => response.text())
     .then(result => {
-        console.log("Enrollment submitted successfully!", result);
         alert("Enrollment submitted successfully!");
         modal.style.display = "none";
     })
@@ -702,7 +704,29 @@ function submitEnrollmentToCRM(event) {
 }
 
 document.addEventListener('DOMContentLoaded', setupEnrollButtons);
+document.addEventListener('DOMContentLoaded', function() {
+    const dobInput = document.getElementById('dobInput');
 
+    dobInput.addEventListener('input', function(event) {
+        let input = event.target.value.replace(/[^0-9]/g, ''); // Remove non-digit characters
+        let formattedInput = '';
+
+        // Splitting the input into MM, DD, YYYY parts
+        if (input.length > 2) {
+            formattedInput += input.substr(0, 2) + '/';
+            input = input.substr(2);
+        }
+        if (input.length > 2) {
+            formattedInput += input.substr(0, 2) + '/';
+            input = input.substr(2);
+        }
+        formattedInput += input;
+
+        event.target.value = formattedInput; // Updating the input field with formatted value
+    });
+
+    setupEnrollButtons(); // Ensure other functions are also initialized
+});
 
 </script>
 
