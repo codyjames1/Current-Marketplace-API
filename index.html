@@ -107,7 +107,6 @@
           <label for="year">Plan Year:</label>
           <select id="year" name="year" required>
               <option value="2024">2024</option>
-              <option value="2023">2023</option>
           </select>
           <div class="btndiv">
           <button class="back" type="button" onclick="nextStep(4, 3)">Back</button>
@@ -117,9 +116,40 @@
 
           <div id="validation-message"></div>
       </form>
+     <!--Mobile filter Container-->
+     <div class="mobile-sidebar" id="mobileSidebar">
+      <div class="filters">
+        <button id="toggleSidebar" class="toggle-sidebar"></button>
+        <h3>Filter Plans</h3>
+        <div>
+            <label for="issuer">Plan Issuer:</label>
+            <div class="issuer-checkboxes" id="issuer-checkboxes">
+              <!-- Checkboxes will be populated dynamically -->
+          </div>
+        </div>
+        <div>
+            <label for="planType">Plan Type:</label>
+            <select id="planType">
+                <option value="">Select Type</option>
+                <option value="HMO">HMO</option>
+                <option value="PPO">PPO</option>
+                <option value="EPO">EPO</option>
+            </select>
+        </div>
+        <div>
+            <label for="sort">Sort By:</label>
+            <select id="sort">
+                <option value="premiumLowHigh">Premium: Low to High</option>
+                <option value="premiumHighLow">Premium: High to Low</option>
+                <option value="deductibleLowHigh">Deductible: Low to High</option>
+            </select>
+        </div>
+        <button class="apply-filters-button" id="apply-filters-button" onclick="applyFilters()">Apply Filters</button>
+    </div>
+</div>
           
           
-      <div id="results">
+      <div class="results" id="results">
         <!-- Results will be displayed here -->
     </div>
     <button id="load-more-button">Load More</button>
@@ -161,19 +191,6 @@ window.onload = function() {
     }
     validateZipCode()
 };
-
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navLinks = document.querySelector('.nav-links');
-
-    hamburger.addEventListener('click', function() {
-        if (navLinks.style.right === "0px") {
-            navLinks.style.right = "-50%";
-        } else {
-            navLinks.style.right = "0";
-        }
-    });
-});
 
 
   // Function to get copay information
@@ -572,11 +589,11 @@ document.getElementById("load-more-button").addEventListener("click", function()
 //Populate filters with plan data 
 
 function populateIssuers(data) {
-    const issuerContainer = document.getElementById('issuer-checkboxes');
-    issuerContainer.innerHTML = '';  // Clear previous entries
+    const issuerContainers = document.querySelectorAll('.issuer-checkboxes'); // Target both mobile and desktop containers
+    issuerContainers.forEach(container => {
+        container.innerHTML = '';  // Clear previous entries
 
-    let issuers = new Set();
-    if (data && data.plans) {
+        let issuers = new Set();
         data.plans.forEach(plan => {
             if (plan.issuer && plan.issuer.name) {
                 issuers.add(plan.issuer.name);
@@ -587,47 +604,51 @@ function populateIssuers(data) {
             const label = document.createElement('label');
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
-            checkbox.className ='box'
+            checkbox.className = 'box';
             checkbox.value = issuer;
             checkbox.name = 'issuer';
             label.appendChild(checkbox);
-            label.append(issuer);  
-            issuerContainer.appendChild(label);
+            label.append(issuer);
+            container.appendChild(label);
         });
-    }
+    });
 }
-
 
 // Filters
 function applyFilters() {
-    const checkboxes = document.querySelectorAll('#issuer-checkboxes input[type="checkbox"]:checked');
+    const checkboxes = document.querySelectorAll('.issuer-checkboxes input[type="checkbox"]:checked');
     const selectedIssuers = Array.from(checkboxes).map(cb => cb.value);
-    const selectedPlanType = document.getElementById('planType').value;
+    const selectedPlanTypeElement = document.querySelector('#planType');
+    const selectedPlanType = selectedPlanTypeElement ? selectedPlanTypeElement.value : '';
 
-    // Filter by issuer if any checkboxes are checked, otherwise include all
-    let filteredPlans = checkboxes.length === 0 ? globalPlanData : globalPlanData.filter(plan => selectedIssuers.includes(plan.issuer.name));
+    const sortElement = document.querySelector('#sort');
+    const sortOption = sortElement ? sortElement.value : '';
 
-    // Filter by plan type if a specific type is selected
+    let filteredPlans = selectedIssuers.length === 0 ? globalPlanData : globalPlanData.filter(plan => selectedIssuers.includes(plan.issuer.name));
+
     if (selectedPlanType) {
         filteredPlans = filteredPlans.filter(plan => plan.type === selectedPlanType);
     }
 
-    // Get selected sorting option
-    const sortOption = document.getElementById('sort').value;
-
-    // Sorting plans based on the selected option
-    if (sortOption === 'premiumLowHigh') {
-        filteredPlans.sort((a, b) => a.premium_w_credit - b.premium_w_credit);
-    } else if (sortOption === 'premiumHighLow') {
-        filteredPlans.sort((a, b) => b.premium_w_credit - a.premium_w_credit);
-    } else if (sortOption === 'deductibleLowHigh') {
-        filteredPlans.sort((a, b) => getDeductibleAmount(a) - getDeductibleAmount(b));
+    switch (sortOption) {
+        case 'premiumLowHigh':
+            filteredPlans.sort((a, b) => a.premium_w_credit - b.premium_w_credit);
+            break;
+        case 'premiumHighLow':
+            filteredPlans.sort((a, b) => b.premium_w_credit - a.premium_w_credit);
+            break;
+        case 'deductibleLowHigh':
+            filteredPlans.sort((a, b) => getDeductibleAmount(a) - getDeductibleAmount(b));
+            break;
     }
 
     displayPlans({ plans: filteredPlans });
 }
 
-document.getElementById('apply-filters-button').addEventListener('click', applyFilters);
+// Attach event listener in a way that ensures it works across the entire document
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('apply-filters-button').addEventListener('click', applyFilters);
+});
   
 //Enrollment Module
 function setupEnrollButtons() {
@@ -747,6 +768,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
   });
+
+  //Mobile Sidebar Functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('toggleSidebar');
+    const mobileSidebar = document.getElementById('mobileSidebar');
+    mobileSidebar.style.transform = 'translateY(-2%)';
+
+    toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+
+    toggleButton.addEventListener('click', function() {
+        if (mobileSidebar.style.transform === 'translateY(0%)') {
+            mobileSidebar.style.transform = 'translateY(-75%)'; // Hide
+            toggleButton.innerHTML = '<i class="fas fa-arrow-down"></i>';
+        } else {
+            mobileSidebar.style.transform = 'translateY(0%)'; // Show
+            toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            
+        }
+    });
+});
 
 
 </script>

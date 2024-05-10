@@ -446,7 +446,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  z-index: 12; /* Sit on top */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -512,7 +512,9 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .callus {
-  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
   text-align: center;
 }
 
@@ -520,7 +522,31 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   height: 1.5rem;
 }
 
+.mobile-sidebar{
+  display: none;
+  position: fixed;
+  top: 92%;
+  left: 5%;
+    width: 90%; 
+    z-index: 10; 
+    transform: translateY(-100%); 
+    transition: transform 0.3s ease-in-out;
+    overflow: hidden; 
+}
 
+.mobile-sidebar.is-visible {
+  display: block;
+    transform: translateY(0); /* Show sidebar */
+}
+
+.toggle-sidebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  width: 30%;
+  height: 2.5rem;
+}
 
 
 @media (max-width: 760px) {
@@ -530,14 +556,26 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
         box-sizing: border-box; 
         overflow-x: hidden;
     }
-  
-    .sidebar {
-        margin-right: 0; /* Remove margin between sidebar and content-area */
-        position: static;
-        display: none;
+
+    .mobile-sidebar {
+      display: block; 
+
+  }
+
+  .filters {
+  }
+    .results {
+      display: block;
+
     }
   
-    .filters { /* Hide filters on mobile */
+    .sidebar {
+      display: none;
+        
+    }
+
+    .video-container {
+      display: none;
     }
   
     .plan {
@@ -584,6 +622,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
     }
     
     #insurance-form {
+      order: 0;
         width: 100%; /* Ensure the form takes the full width */
         margin: 0 auto; /* Center the form horizontally */
         padding: 10px; /* Add padding to match the styling of the plans area */
@@ -653,5 +692,5 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
  
 
     
+}
 
-  }
