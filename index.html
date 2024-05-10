@@ -23,7 +23,7 @@
     </div>
     <div class="callus">
       <h3>
-        Have Questions? Call Us <a  href="tel:8886457766" class="callbtn">888-645-7766</a>
+        Have Questions? Call Us <a  href="tel:8559685736" class="callbtn">855-968-5736</a>
     </h3>
 
     </div>
@@ -167,7 +167,7 @@
         <input type="text" name="planName" id="planNameInput" readonly>
         <input type="text" name="firstName" placeholder="First Name" required>
         <input type="text" name="lastName" placeholder="Last Name" required>
-        <input type="text" name="phone" placeholder="Phone Number" required>
+        <input id="phone" type="text" name="phone" placeholder="Phone Number" required>
         <input type="text" name="email" placeholder="Email Address" required>
         <input type="text" name="dob" placeholder="Date of Birth" id="dobInput" required>
         <input type="text" name="gender" id="genderInput" readonly>
@@ -686,8 +686,22 @@ function setupEnrollButtons() {
         }
     });
 
+    
+
     document.getElementById('enrollmentForm').addEventListener('submit', submitEnrollmentToCRM);
+
+ // Handle phone input to allow only numbers
+ const phoneInput = document.getElementById('phone');
+    phoneInput.addEventListener('input', restrictPhoneNumber);
 }
+
+function restrictPhoneNumber(event) {
+    const input = event.target;
+    const cleaned = input.value.replace(/\D/g, ''); // Remove non-digit characters
+    input.value = cleaned.slice(0, 10); // Limit to 10 digits
+}
+
+document.addEventListener('DOMContentLoaded', setupEnrollButtons);
 
 function submitEnrollmentToCRM(event) {
     event.preventDefault();
@@ -711,16 +725,16 @@ function submitEnrollmentToCRM(event) {
     });
 
     fetch(`${endpoint}?${params.toString()}`, {
-        method: 'POST'
+        method: 'POST',
+        mode: 'no-cors' // Set the mode to 'no-cors' to avoid CORS errors
     })
-    .then(response => response.text())
-    .then(result => {
-        alert("Enrollment submitted successfully!");
-        modal.style.display = "none";
+    .then(() => {
+        console.log("Enrollment submitted successfully!");
+        window.location.href = "https://healthcareplanquotes.com/thank-you"; // Redirect user on success
     })
     .catch(error => {
         console.error('Error submitting enrollment:', error);
-        alert("Failed to submit enrollment.");
+        alert("Failed to submit enrollment, check console for details.");
     });
 }
 
