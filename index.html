@@ -775,15 +775,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const mobileSidebar = document.getElementById('mobileSidebar');
     mobileSidebar.style.transform = 'translateY(-2%)';
 
-    toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+    toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i> Filters';
 
     toggleButton.addEventListener('click', function() {
         if (mobileSidebar.style.transform === 'translateY(0%)') {
             mobileSidebar.style.transform = 'translateY(-75%)'; // Hide
-            toggleButton.innerHTML = '<i class="fas fa-arrow-down"></i>';
+            toggleButton.innerHTML = '<i class="fas fa-arrow-down"></i> Filters';
         } else {
             mobileSidebar.style.transform = 'translateY(0%)'; // Show
-            toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i>';
+            toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i> Filters';
             
         }
     });

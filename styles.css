@@ -525,7 +525,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 .mobile-sidebar{
   display: none;
   position: fixed;
-  top: 92%;
+  top: 91%;
   left: 5%;
     width: 90%; 
     z-index: 10; 
