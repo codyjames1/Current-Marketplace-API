@@ -29,7 +29,7 @@
         <!-- Replace 'logo.png' with your logo file -->
     </div>
     <div class="callus">
-      <h3>
+      <h3 class="headcall">
         Have Questions? Call Us <a  href="tel:8559685736" class="callbtn">855-968-5736</a>
     </h3>
 
@@ -79,7 +79,7 @@
           
           <!-- Step 1: Address -->
           <div id="step1" class="form-step active-step">
-            <p class="tip">Start by entering your address so we can search plans in your area.<br><br>We'll fill in the state for you!</p>
+            <p class="tip">We us your zipcode to find and show you available plans.<br><br>We'll fill in the state for you!</p>
             <input type="text" id="zipcode" name="zipcode" maxlength="5" minlength="5" pattern="\d{5}" placeholder="Enter ZIP Code" required oninput="autoValidateZipCode(this.value)">
               <input type="text" id="state" name="state" placeholder="State" required readonly>
               <input type="hidden" id="countyfips" name="countyfips">
