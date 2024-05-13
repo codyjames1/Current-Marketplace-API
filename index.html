@@ -370,12 +370,12 @@ function getDeductibleAmount(plan) {
     enrollButton.innerText = "Enroll";
     enrollButton.className = "enroll-button";
     buttonContainer.appendChild(enrollButton);
-    const detailsButton = document.createElement("a");
-    detailsButton.innerText = "Plan Details";
-    detailsButton.className = "details-button";
-    detailsButton.href = plan.benefits_url;
-    detailsButton.target = "_blank";
-    buttonContainer.appendChild(detailsButton);
+    const detailsButton = document.createElement("a"); // still use an <a> element for the link
+detailsButton.innerText = "Call Us"; // Change text to "Call Us"
+detailsButton.className = "details-button";
+detailsButton.href = "tel:8559685736"; // Set href to telephone link
+detailsButton.style.textDecoration = "none"; // Optional: Removes underline from link
+buttonContainer.appendChild(detailsButton);
     detailsContainer.appendChild(buttonContainer);
     setupEnrollButtons();
 }
