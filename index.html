@@ -220,7 +220,7 @@ window.onload = function() {
     return "Not Covered";
 }
 
-  function displayPlans(data) {
+function displayPlans(data) {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";  // Clear to re-render from scratch as a test
 
@@ -235,9 +235,11 @@ window.onload = function() {
     };
 
     if (data.plans && data.plans.length > 0) {
-        data.plans.forEach(plan => {
+        data.plans.forEach((plan, index) => {
             const planDiv = document.createElement("div");
             planDiv.className = "plan";
+            if (index === 0) planDiv.id = "first-plan"; // Set an ID for the first plan
+
             const header = document.createElement("div");
             header.className = "plan-header";
 
@@ -254,13 +256,19 @@ window.onload = function() {
 
             const planName = document.createElement("span");
             planName.textContent = plan.name;
-            planName.className = "plan-name"
+            planName.className = "plan-name";
             header.appendChild(planName);
 
             planDiv.appendChild(header);
             appendPlanDetails(plan, planDiv);
             resultsDiv.appendChild(planDiv);
         });
+
+        // Auto-scroll to the first plan
+        const firstPlanElement = document.getElementById("first-plan");
+        if (firstPlanElement) {
+            firstPlanElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
 
         // Check if we should show the Load More button
         if (currentMetalIndex < metalLevels.length - 1) {
