@@ -220,6 +220,8 @@ window.onload = function() {
     return "Not Covered";
 }
 
+let shouldScroll = false;
+
 function displayPlans(data) {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";  // Clear to re-render from scratch as a test
@@ -264,10 +266,13 @@ function displayPlans(data) {
             resultsDiv.appendChild(planDiv);
         });
 
-        // Auto-scroll to the first plan
-        const firstPlanElement = document.getElementById("first-plan");
-        if (firstPlanElement) {
-            firstPlanElement.scrollIntoView({ behavior: "smooth", block: "start" });
+         // Auto-scroll to the first plan if the flag is set
+         if (shouldScroll) {
+            const firstPlanElement = document.getElementById("first-plan");
+            if (firstPlanElement) {
+                firstPlanElement.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+            shouldScroll = false;  // Reset the flag after scrolling
         }
 
         // Check if we should show the Load More button
@@ -285,6 +290,14 @@ function displayPlans(data) {
         }
     }
 }
+
+// Set the flag to true when the "Search Marketplace" button is clicked
+document.getElementById("insurance-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+    shouldScroll = true;  // Set the flag to true
+    // Gather data and call fetchPlansAndPopulateIssuers as usual
+    // ...
+});
 
   //income formating for dollar amount
   function formatIncome() {
