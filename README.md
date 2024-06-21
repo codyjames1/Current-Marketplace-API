@@ -65,7 +65,7 @@ fetch('https://rest.clicksend.com/v3/sms/send', {
     },
     body: JSON.stringify(message)
 });
-
+```
 
 ### Abstract API
 Endpoint: https://phonevalidation.abstractapi.com/v1
@@ -88,7 +88,7 @@ fetch(url)
         }
     })
     .catch(error => console.error('Error:', error));
-
+```
     
 ### Chase Data Corp API
 Endpoint: https://api.chasedatacorp.com/HttpImport/InjectLead.php
@@ -125,7 +125,7 @@ fetch(`${endpoint}?${params.toString()}`, {
     console.error('Error submitting enrollment:', error);
     alert("Failed to submit enrollment, check console for details.");
 });
-
+```
 ### External Libraries
 jQuery: Used for various DOM manipulations.
 Lottie: Used for displaying loading animations.
