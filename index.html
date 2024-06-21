@@ -5,7 +5,7 @@
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(t,y);
     })(window,document,'script','dataLayer','GTM-5495QTBD');</script>
     <!-- End Google Tag Manager -->
     
@@ -87,7 +87,7 @@
           
           <!-- Step 1: Address -->
           <div id="step1" class="form-step active-step">
-            <p class="tip">We us your zipcode to find and show you available plans.<br><br>We'll fill in the state for you!</p>
+            <p class="tip">We use your zipcode to find and show you available plans.<br><br>We'll fill in the state for you!</p>
             <input type="text" id="zipcode" name="zipcode" maxlength="5" minlength="5" pattern="\d{5}" placeholder="Enter ZIP Code" required oninput="autoValidateZipCode(this.value)">
               <input type="text" id="state" name="state" placeholder="State" required readonly>
               <input type="hidden" id="countyfips" name="countyfips">
@@ -106,17 +106,18 @@
         </div>
         
         <div id="step3" style="display:none;" class="form-step">
-          <p class="tip">Your age and gender help to determine your rates.  </p>
-          <input type="number" id="age" name="age" inputmode="numeric" placeholder="Age" required>
-          <select id="gender" name="gender" placeholder="Gender" required>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-          <div class="btndiv">
-          <button class="back" type="button" onclick="nextStep(3, 2)">Back</button>
-          <button class="next" type="button" onclick="nextStep(3, 4)">Next</button>
-        </div>
-        </div>
+            <p class="tip">Your age and gender help to determine your rates.  </p>
+            <div id="age-validation-message" style="color:red;"></div>
+            <input type="number" id="age" name="age" inputmode="numeric" placeholder="Age" required>
+            <select id="gender" name="gender" placeholder="Gender" required>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+            <div class="btndiv">
+              <button class="back" type="button" onclick="nextStep(3, 2)">Back</button>
+              <button class="next" type="button" onclick="validateAgeAndProceed()">Next</button>
+            </div>
+          </div>
         
         <div id="step4" style="display:none;" class="form-step final-step">
           <label for="year">Plan Year:</label>
@@ -438,6 +439,18 @@ function nextStep(current, next) {
         }, 500); 
     } else {
         console.error("Step " + next + " does not exist.");
+    }
+}
+
+function validateAgeAndProceed() {
+    const age = parseInt(document.getElementById('age').value);
+    const ageValidationMessage = document.getElementById('age-validation-message');
+    ageValidationMessage.textContent = '';  // Clear previous messages
+
+    if (age >= 65) {
+        ageValidationMessage.textContent = "Sorry, you are not eligible to enroll in a plan.";
+    } else {
+        nextStep(3, 4);
     }
 }
 
