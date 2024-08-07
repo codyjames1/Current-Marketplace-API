@@ -26,10 +26,9 @@ This project is a web application designed to help users find and enroll in heal
 ### Marketplace API
 - **Endpoint**: `https://marketplace.api.healthcare.gov/api/v1/plans/search`
 - **Purpose**: Fetches available health insurance plans based on user input.
-- **API Key**: `kRw5hB8ZreXQeO0258wgCB6x9543otMW`
 - **Example Request**:
   ```javascript
-  const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW&limit=10`;
+  const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=`;
   fetch(endpointUrl, {
       method: "POST",
       headers: {
@@ -43,15 +42,14 @@ This project is a web application designed to help users find and enroll in heal
 ### ClickSend API
 Endpoint: https://rest.clicksend.com/v3/sms/send
 Purpose: Sends SMS notifications to users upon successful form submission.
-API Key: B55B3754-6BA0-A1AC-2FF9-6C518C93C8AF
 - **Example Request**:
 ```javascript
 const message = {
     messages: [
         {
-            from: '+18332369491',
+            from: '',
             to: phoneNumber,
-            body: 'Hi, Health Care Plan Quotes here! We received your application for health insurance. An agent will be reaching out shortly to finalize your application. Or, call us at (855) 968-5736.',
+            body: 'Hi, Health Care Plan Quotes here! ',
             source: 'web'
         }
     ]
@@ -70,11 +68,10 @@ fetch('https://rest.clicksend.com/v3/sms/send', {
 ### Abstract API
 Endpoint: https://phonevalidation.abstractapi.com/v1
 Purpose: Validates the phone number entered by the user in the enrollment form.
-API Key: 6df860a9461c41ccbe151f0aa0e7e343
 - **Example Request**:
 ```javascript
 const phone = document.getElementById('phone').value;
-const url = `https://phonevalidation.abstractapi.com/v1/?api_key=6df860a9461c41ccbe151f0aa0e7e343&phone=${phone}`;
+const url = `https://phonevalidation.abstractapi.com/v1/?api_key=&phone=${phone}`;
 
 fetch(url)
     .then(response => response.json())
@@ -91,16 +88,16 @@ fetch(url)
 ```
     
 ### Chase Data Corp API
-Endpoint: https://api.chasedatacorp.com/HttpImport/InjectLead.php
+Endpoint: https://api.chasedatacorp.com
 Purpose: Submits user enrollment data to the CRM.
 - **Example Request**:
 ```javascript
 const endpoint = 'https://api.chasedatacorp.com/HttpImport/InjectLead.php';
 const params = new URLSearchParams({
-    token: '9b8ad439-3450-4ce9-8f4a-62ba090de965',
-    accid: 'fchc',
-    Campaign: 'ACA',
-    Subcampaign: 'Healthcareplanquotes.com',
+    token: '',
+    accid: '',
+    Campaign: '',
+    Subcampaign: '',
     FirstName: document.getElementById('enrollmentForm').querySelector('[name="firstName"]').value,
     LastName: document.getElementById('enrollmentForm').querySelector('[name="lastName"]').value,
     PrimaryPhone: document.getElementById('enrollmentForm').querySelector('[name="phone"]').value,
