@@ -40,7 +40,7 @@
     </div>
     <div class="callus">
       <h3 class="headcall">
-        Have Questions? Call Us <a  href="tel:8559685736" class="callbtn">855-968-5736</a>
+        Have Questions? Call Us <a  href="tel:###" class="callbtn">###</a>
       </h3>
     </div>
   </nav>
@@ -251,7 +251,7 @@ function displayPlans(data) {
         data.plans.forEach((plan, index) => {
             const planDiv = document.createElement("div");
             planDiv.className = "plan";
-            if (index === 0) planDiv.id = "first-plan"; // Set an ID for the first plan
+            if (index === 0) planDiv.id = "first-plan";
 
             const header = document.createElement("div");
             header.className = "plan-header";
@@ -305,9 +305,7 @@ function displayPlans(data) {
 // Set the flag to true when the "Search Marketplace" button is clicked
 document.getElementById("insurance-form").addEventListener("submit", function (event) {
     event.preventDefault();
-    shouldScroll = true;  // Set the flag to true
-    // Gather data and call fetchPlansAndPopulateIssuers as usual
-    // ...
+    shouldScroll = true; 
 });
 
 //income formating for dollar amount
@@ -390,7 +388,6 @@ function appendPlanDetails(plan, planDiv) {
     details.forEach(detail => {
     const detailDiv = document.createElement("div");
     detailDiv.className = "plan-detail";
-    // Separate the label and value into spans, applying the specialClass to the value span
     detailDiv.innerHTML = `<span class="detail-label">${detail.label}</span> <span class="detail-value ${detail.specialClass || ''}">${detail.value}</span>`;
     detailsContainer.appendChild(detailDiv);
 });
@@ -402,11 +399,11 @@ function appendPlanDetails(plan, planDiv) {
     enrollButton.innerText = "Enroll";
     enrollButton.className = "enroll-button";
     buttonContainer.appendChild(enrollButton);
-    const detailsButton = document.createElement("a"); // still use an <a> element for the link
-    detailsButton.innerText = "Call Us"; // Change text to "Call Us"
+    const detailsButton = document.createElement("a"); 
+    detailsButton.innerText = "Call Us";
     detailsButton.className = "details-button";
-    detailsButton.href = "tel:8559685736"; // Set href to telephone link
-    detailsButton.style.textDecoration = "none"; // Optional: Removes underline from link
+    detailsButton.href = "tel:8559685736"; 
+    detailsButton.style.textDecoration = "none";
     buttonContainer.appendChild(detailsButton);
     detailsContainer.appendChild(buttonContainer);
     setupEnrollButtons();
@@ -436,7 +433,7 @@ function nextStep(current, next) {
         setTimeout(() => {
             currentStep.style.display = "none";
             nextStep.style.display = "block";
-            setTimeout(() => nextStep.classList.add("active-step"), 10); // Allow display to be set before adding opacity
+            setTimeout(() => nextStep.classList.add("active-step"), 10); 
         }, 500); 
     } else {
         console.error("Step " + next + " does not exist.");
@@ -446,7 +443,7 @@ function nextStep(current, next) {
 function validateAgeAndProceed() {
     const age = parseInt(document.getElementById('age').value);
     const ageValidationMessage = document.getElementById('age-validation-message');
-    ageValidationMessage.textContent = '';  // Clear previous messages
+    ageValidationMessage.textContent = '';  
 
     if (age >= 65) {
         ageValidationMessage.textContent = "Sorry, you are not eligible to enroll in a plan.";
@@ -460,7 +457,7 @@ function validateCurrentStepInputs(stepElement) {
     var inputs = stepElement.querySelectorAll("input[required], select[required]");
     for (var i = 0; i < inputs.length; i++) {
         if (!inputs[i].checkValidity()) {
-            inputs[i].reportValidity(); // Show validation message
+            inputs[i].reportValidity(); 
             return false;
         }
     }
@@ -565,7 +562,7 @@ document.getElementById("insurance-form").addEventListener("submit", function (e
 
 function showLottieAnimation() {
     const lottieDiv = document.getElementById('lottie-container');
-    lottieDiv.style.display = 'block'; // Show the Lottie container
+    lottieDiv.style.display = 'block'; 
 
     const animation = lottie.loadAnimation({
         container: lottieDiv,
@@ -690,7 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
 function setupEnrollButtons() {
     const enrollButtons = document.querySelectorAll('.enroll-button');
     const modal = document.getElementById('enrollmentModal');
-    const closeSpan = document.querySelector('.close'); // Assuming there's only one close button
+    const closeSpan = document.querySelector('.close'); 
 
     enrollButtons.forEach(button => {
         button.addEventListener('click', function() {
@@ -731,8 +728,8 @@ function setupEnrollButtons() {
 
 function restrictPhoneNumber(event) {
     const input = event.target;
-    const cleaned = input.value.replace(/\D/g, ''); // Remove non-digit characters
-    input.value = cleaned.slice(0, 10); // Limit to 10 digits
+    const cleaned = input.value.replace(/\D/g, ''); 
+    input.value = cleaned.slice(0, 10); 
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -740,7 +737,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const dobInput = document.getElementById('dobInput');
     dobInput.addEventListener('input', function(event) {
-        let input = event.target.value.replace(/[^0-9]/g, ''); // Remove non-digit characters
+        let input = event.target.value.replace(/[^0-9]/g, ''); 
         let formattedInput = '';
 
         // Splitting the input into MM, DD, YYYY parts
@@ -754,7 +751,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         formattedInput += input;
 
-        event.target.value = formattedInput; // Updating the input field with formatted value
+        event.target.value = formattedInput; 
     });
 
     document.getElementById('enrollmentForm').addEventListener('submit', submitEnrollmentToCRM);
@@ -762,8 +759,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function restrictPhoneNumber(event) {
     const input = event.target;
-    const cleaned = input.value.replace(/\D/g, ''); // Remove non-digit characters
-    input.value = cleaned.slice(0, 10); // Limit to 10 digits
+    const cleaned = input.value.replace(/\D/g, ''); 
+    input.value = cleaned.slice(0, 10); 
 }
 
 async function validatePhoneNumber() {
@@ -821,11 +818,11 @@ async function submitEnrollmentToCRM(event) {
 
     fetch(`${endpoint}?${params.toString()}`, {
         method: 'POST',
-        mode: 'no-cors' // Set the mode to 'no-cors' to avoid CORS errors
+        mode: 'no-cors' 
     })
     .then(() => {
         console.log("Enrollment submitted successfully!");
-        window.location.href = "https://healthcareplanquotes.com/thank-you"; // Redirect user on success
+        window.location.href = "https://healthcareplanquotes.com/thank-you"; 
     })
     .catch(error => {
         console.error('Error submitting enrollment:', error);
@@ -875,7 +872,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dobInput = document.getElementById('dobInput');
 
     dobInput.addEventListener('input', function(event) {
-        let input = event.target.value.replace(/[^0-9]/g, ''); // Remove non-digit characters
+        let input = event.target.value.replace(/[^0-9]/g, '');
         let formattedInput = '';
 
         // Splitting the input into MM, DD, YYYY parts
@@ -889,10 +886,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         formattedInput += input;
 
-        event.target.value = formattedInput; // Updating the input field with formatted value
+        event.target.value = formattedInput; 
     });
 
-    setupEnrollButtons(); // Ensure other functions are also initialized
+    setupEnrollButtons(); 
 });
 
 // Prevent early submission with enter key
@@ -902,12 +899,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
     inputs.forEach(input => {
         input.addEventListener('keydown', function(event) {
-            // Check if the Enter key was pressed
             if (event.key === 'Enter') {
-                // Prevent the default form submit if not on the final step
                 if (!this.closest('.form-step').classList.contains('final-step')) {
                     event.preventDefault();
-                    // Optionally, move to the next input or perform other logic
                     return false;
                 }
             }
@@ -939,10 +933,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     toggleButton.addEventListener('click', function() {
         if (mobileSidebar.style.transform === 'translateY(0%)') {
-            mobileSidebar.style.transform = 'translateY(-75%)'; // Hide
+            mobileSidebar.style.transform = 'translateY(-75%)'; 
             toggleButton.innerHTML = '<i class="fas fa-arrow-down"></i> Filters';
         } else {
-            mobileSidebar.style.transform = 'translateY(0%)'; // Show
+            mobileSidebar.style.transform = 'translateY(0%)'; 
             toggleButton.innerHTML = '<i class="fas fa-arrow-up"></i> Filters';
         }
     });
