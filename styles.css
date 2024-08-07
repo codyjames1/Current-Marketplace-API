@@ -35,12 +35,12 @@ body, html {
   text-align: center;
   position: fixed;
   background-color: rgb(231, 239, 253);
-  width: 100px;  /* Fixed width might work better for consistent behavior */
+  width: 100px;  
   height: 100%;
   top: 0;
-  right: -100%; /* Ensure this is slightly more than the width to fully hide it */
+  right: -100%;
   transition: right 0.3s;
-  z-index: 1000;  /* Ensures it stays on top of other content if needed */
+  z-index: 1000;  
   margin-top: 5rem;
   -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
@@ -84,18 +84,18 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 .main-container {
     display: flex;
-    flex-direction: row; /* Ensure the sidebar and content area are side-by-side */
-    width: 100%; /* Full width to use all available space */
-    min-height: 100vh; /* Optional: full height of the viewport */
-    padding: 20px; /* Optional: spacing around the content */
-    box-sizing: border-box; /* Includes padding in width calculation */
+    flex-direction: row;
+    width: 100%; 
+    min-height: 100vh; 
+    padding: 20px; 
+    box-sizing: border-box;
     -webkit-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 -moz-box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .sidebar {
-    width: 40%; /* Adjust based on preference */
+    width: 40%; 
     padding: 20px;
     height: 100vh;
     position: sticky;
@@ -104,7 +104,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .content-area {
-    flex-grow: 1; /* Takes up remaining space */
+    flex-grow: 1; 
 }
 
 
@@ -118,8 +118,8 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 }
 
 .video-container {
-    width: 100%; /* Ensures the video container matches the filter menu width */
-    margin-top: 20px; /* Optional: Adds some space between the filter div and the video */
+    width: 100%; 
+    margin-top: 20px; 
     
 
 }
@@ -466,19 +466,19 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   justify-content: center;
   align-items: center;
   text-align: center;
-  margin: 5% auto; /* Adjusted for auto vertical margin */
-  background-color: transparent; /* Changed to white for better visibility */
-  width: 60%; /* Adjust width as necessary */
-  max-height: 80vh; /* Maximum height to 80% of the viewport height */
+  margin: 5% auto; 
+  background-color: transparent; 
+  width: 60%; 
+  max-height: 80vh;
   overflow-y: auto; 
-  overflow-x: hidden;/* Enable vertical scrolling */
-  padding: 20px; /* Add padding for spacing inside the modal *//* Optional: Rounds the corners */
-  scrollbar-width: none; /* For Firefox */
-  -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+  overflow-x: hidden;
+  padding: 20px; 
+  scrollbar-width: none; 
+  -ms-overflow-style: none;  
 }
 
 .modal-content::-webkit-scrollbar {
-  display: none; /* For Chrome, Safari, and Opera */
+  display: none; 
 }
 
 .enrollment-form {
@@ -537,7 +537,7 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
 
 .mobile-sidebar.is-visible {
   display: block;
-    transform: translateY(0); /* Show sidebar */
+    transform: translateY(0); 
 }
 
 .toggle-sidebar {
@@ -590,13 +590,13 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   
     .plan {
         flex-direction: column; 
-        width: 100%; /* Ensure plans take full width */
+        width: 100%; 
         margin-top: 2rem;
-        box-sizing: border-box; /* Include padding and border in width */
+        box-sizing: border-box; 
     }
   
     .plan-header-container, .plan-details-container {
-        width: 100%; /* Full width on mobile */
+        width: 100%; 
     }
   
     .zero-premium {
@@ -617,43 +617,43 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
     }
   
     .enroll-button, .details-button {
-      padding: 8px; /* Reduce padding if necessary */
-      margin: 0 auto; /* Center buttons if they're not already */
-      display: block;/* Ensure they stack without overflow */
+      padding: 8px; 
+      margin: 0 auto; 
+      display: block;
   }
 
-  .enroll-container { /* Align buttons to prevent horizontal overflow */
+  .enroll-container { 
       gap: 1rem;
       margin-right: 2rem;
   }
   
     #insurance-form, #insurance-form * {
-        box-sizing: border-box; /* Apply box-sizing to all child elements */
+        box-sizing: border-box; 
     }
     
     #insurance-form {
       order: 0;
-        width: 100%; /* Ensure the form takes the full width */
-        margin: 0 auto; /* Center the form horizontally */
-        padding: 10px; /* Add padding to match the styling of the plans area */
+        width: 100%; 
+        margin: 0 auto; 
+        padding: 10px; 
     }
     
     .form-step {
-        width: 100%; /* Ensure each form step takes full width */
-        margin-top: 1rem; /* Space out form steps */
+        width: 100%;
+        margin-top: 1rem; 
         text-align: center;
-        font-size: 18px; /* Adjust font size for better readability on mobile */
+        font-size: 18px;
     }
     
     input[type="text"], input[type="number"], select, button {
-        width: 100%; /* Ensure inputs and buttons take full width */
-        padding: 8px 10px; /* Uniform padding for inputs */
-        margin: 5px 0; /* Add slight margin around inputs for spacing */
+        width: 100%; 
+        padding: 8px 10px; 
+        margin: 5px 0;
         height: 4rem;
     }
     
     .btndiv {
-        text-align: center; /* Center buttons within the form */
+        text-align: center;
     }
 
     .hamburger {
@@ -673,19 +673,19 @@ box-shadow: 0px 0px 24px 0px rgba(0,0,0,0.08);
   .modal-content {
     justify-content: center;
     align-items: center;
-    text-align: center;/* Adjusted for auto vertical margin */
-    background-color: transparent; /* Changed to white for better visibility */
-    width: 100%; /* Adjust width as necessary */
-    max-height: 100vh; /* Maximum height to 80% of the viewport height */
+    text-align: center;
+    background-color: transparent; 
+    width: 100%; 
+    max-height: 100vh; 
     overflow-y: auto; 
     overflow-x: hidden;
-    padding: 0px 0px 0px 0px;/* Add padding for spacing inside the modal *//* Optional: Rounds the corners */
-    scrollbar-width: none; /* For Firefox */
-    -ms-overflow-style: none;  /* For Internet Explorer and Edge */
+    padding: 0px 0px 0px 0px;
+    scrollbar-width: none; 
+    -ms-overflow-style: none; 
   }
   
   .modal-content::-webkit-scrollbar {
-    display: none; /* For Chrome, Safari, and Opera */
+    display: none; 
   }
 
   .enrollment-form {
