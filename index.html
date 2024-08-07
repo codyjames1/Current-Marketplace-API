@@ -488,7 +488,7 @@ function validateZipCode() {
         return;
     }
 
-    const apiUrl = `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW`;
+    const apiUrl = `https://marketplace.api.healthcare.gov/api/v1/counties/by/zip/${zipcode}?apikey=Your_APi_Here`;
 
     fetch(apiUrl)
     .then(response => {
@@ -587,7 +587,7 @@ let metalLevels = ["Bronze", "Silver", "Gold"];
 let currentMetalIndex = 0;
 
 function fetchPlansAndPopulateIssuers(data) {
-    const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=kRw5hB8ZreXQeO0258wgCB6x9543otMW&limit=10`;
+    const endpointUrl = `https://marketplace.api.healthcare.gov/api/v1/plans/search?apikey=You_API_Here`;
     console.log("Fetching plans for metal level:", data.filter.metal_levels);
 
     fetch(endpointUrl, {
@@ -769,7 +769,7 @@ function restrictPhoneNumber(event) {
 async function validatePhoneNumber() {
     const phoneInput = document.getElementById('phone').value;
     const phoneValidationMessage = document.getElementById('phone-validation-message');
-    const apiKey = '6df860a9461c41ccbe151f0aa0e7e343';
+    const apiKey = 'Your_API_Key';
 
     phoneValidationMessage.textContent = '';  // Clear previous messages
 
@@ -800,10 +800,10 @@ async function submitEnrollmentToCRM(event) {
 
     const endpoint = 'https://api.chasedatacorp.com/HttpImport/InjectLead.php';
     const params = new URLSearchParams({
-        token: '9b8ad439-3450-4ce9-8f4a-62ba090de965',
-        accid: 'fchc',
-        Campaign: 'ACA',
-        Subcampaign: 'Healthcareplanquotes.com',
+        token: '###',
+        accid: '###',
+        Campaign: '###',
+        Subcampaign: '###',
         FirstName: document.getElementById('enrollmentForm').querySelector('[name="firstName"]').value,
         LastName: document.getElementById('enrollmentForm').querySelector('[name="lastName"]').value,
         PrimaryPhone: document.getElementById('enrollmentForm').querySelector('[name="phone"]').value,
@@ -835,21 +835,21 @@ async function submitEnrollmentToCRM(event) {
 
 // Define the sendSMS function using ClickSend API
 async function sendSMS(phoneNumber) {
-    const username = 'admin@intuitiveanalytica.com';
-    const apiKey = 'B55B3754-6BA0-A1AC-2FF9-6C518C93C8AF';
+    const username = '###';
+    const apiKey = '###';
     const message = {
         messages: [
             {
-                from: '+18332369491',
+                from: '###',
                 to: phoneNumber,
-                body: 'Hi, Health Care Plan Quotes here!. We received your application for health insurance. An agent will be reaching out shortly to finalize your application. Or, call us at (855) 968-5736.' ,
+                body: 'Hi, Health Care Plan Quotes here!.' ,
                 source: 'web'
             }
         ]
     };
 
     try {
-        const response = await fetch('https://rest.clicksend.com/v3/sms/send', {
+        const response = await fetch('###', {
             method: 'POST',
             headers: {
                 'Authorization': 'Basic ' + btoa(username + ':' + apiKey),
